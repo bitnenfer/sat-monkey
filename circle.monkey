@@ -15,6 +15,7 @@ Strict
 Import mojo
 Import sat.vector
 Import sat.base
+Import sat.box
 
 Class Circle Implements iBase
 	
@@ -24,6 +25,14 @@ Class Circle Implements iBase
 	Method New (pos:Vector, radius:Float)
 		Self.position = pos
 		Self.radius = radius
+	End
+	
+	Method GetBounds:Box ()
+		Local x:Float = position.x - radius
+		Local y:Float = position.y - radius
+		Local w:Float = radius * 2
+		
+		Return New Box(New Vector(x, y), w, w)
 	End
 	
 	Method DebugDraw:Void ()

@@ -11,7 +11,8 @@
 #END
 
 Strict
+Import sat.box
 
 Interface iBase
-	' Interface to match objects
+	Method GetBounds:Box ()
 End

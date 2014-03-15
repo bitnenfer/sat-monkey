@@ -176,4 +176,7 @@ Class Vector Implements iBase
 		Return Sqrt(Self.Length2())
 	End
 	
+	Method GetBounds:Box ()
+		Return New Box(New Vector(x, y), 1, 1)
+	End
 End

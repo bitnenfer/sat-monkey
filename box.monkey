@@ -38,6 +38,10 @@ Class Box Implements iBase
 		New Vector(w, h), New Vector(0, h)]))
 	End
 	
+	Method GetBounds:Box ()
+		Return ToPolygon().GetBounds()
+	End
+	
 	Method DebugDraw:Void ()
 		Self.ToPolygon().DebugDraw()
 	End
