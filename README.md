@@ -1,5 +1,9 @@
-#SAT for Monkey
+#SAT (Separating Axis Theorem) for Monkey
 
 This is a port of [SAT.js](https://github.com/jriecken/sat-js/) to [Monkey-X](http://monkey-x.com/).
 
-The original version was created by [Jim Riecken](http://www.jimr.ca/) in JavaScript and ported to Monkey by [Felipe Alfonso](http://shin.cl/). 
+The original version was created by [Jim Riecken](http://www.jimr.ca/) in JavaScript and ported to Monkey by [Felipe Alfonso](http://shin.cl/).
+
+This port is based on version 0.4.
+
+For more information on S 
