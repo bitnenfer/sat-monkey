@@ -35,12 +35,12 @@ Class Test2 Extends App
 	Field circle:Circle
 	Field polygon:Polygon
 	Field response:Response
-	Field angle:Float = 0
 	Method OnCreate:Int()
 		polygon = New Polygon(New Vector(160, 120), New VecStack([
 			New Vector(0,0), New Vector(60, 0), New Vector(100, 40), New Vector(60, 80), New Vector(0, 80)]))
 		circle = New Circle(New Vector(300, 300), 20)
 		response = New Response()
+		polygon.Translate(-30, -40)
 		SetUpdateRate(60)
 		Return 0
 	End
@@ -62,9 +62,7 @@ Class Test2 Extends App
 		Elseif (KeyDown(KEY_W))
 			circle.position.y -= 2
 		Endif
-		angle += 0.1
-		
-		polygon.SetAngle(angle)
+		polygon.Rotate(1)
 		
 		Return 0
 	End

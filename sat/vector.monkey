@@ -6,8 +6,8 @@
 	@preserve SAT.js - Version 0.4 - Copyright 2014 - Jim Riecken <jimr@jimr.ca> - 
 	released under the MIT License. https://github.com/jriecken/sat-js
 	
-	Ported to Monkey by Felipe Alfonso
-	https://github.com/ilovepixel/
+	Ported to Monkey by Felipe Alfonso <contact@shin.cl> -
+	https://github.com/ilovepixel/sat-monkey/
 #END
 
 Strict
@@ -47,12 +47,7 @@ Class Vector Implements iBase
 		
 		Self.x = Self.y
 		Self.y = -x
-		#REM
-		var x = this['x'];
-    this['x'] = this['y'];
-    this['y'] = -x;
-    return this;
-		#END
+		
 		Return Self
 	End
 	

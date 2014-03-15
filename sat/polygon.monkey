@@ -1,3 +1,15 @@
+#REM
+	Version 0.4 - Copyright 2014 -  Jim Riecken <jimr@jimr.ca>
+	Released under the MIT License - https://github.com/jriecken/sat-js
+	A simple library for determining intersections of circles and
+	polygons using the Separating Axis Theorem.
+	@preserve SAT.js - Version 0.4 - Copyright 2014 - Jim Riecken <jimr@jimr.ca> - 
+	released under the MIT License. https://github.com/jriecken/sat-js
+	
+	Ported to Monkey by Felipe Alfonso <contact@shin.cl> -
+	https://github.com/ilovepixel/sat-monkey/
+#END
+
 Strict
 
 Import mojo
@@ -62,19 +74,14 @@ Class Polygon Implements iBase
 	End
 	
 	Method Rotate:Polygon (angle:Float)
-		Local i:Int
 		Local points:VecStack = Self.points
-		Local edges:VecStack = Self.edges
-		Local normals:VecStack = Self.normals
 		Local len:Int = points.Length()
-		Local cos:Float = Cos(angle)
-		Local sin:Float = Sin(angle)
+		Local i:Int
 		
 		For i = 0 To len - 1
-			points.Get(i).RotatePrecalc(sin, cos)
-			edges.Get(i).RotatePrecalc(sin, cos)
-			normals.Get(i).RotatePrecalc(sin, cos)
+			points.Get(i).Rotate(angle)
 		Next
+		Self.Recalc()
 		
 		Return Self
 	End
