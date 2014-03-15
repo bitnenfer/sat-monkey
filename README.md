@@ -6,4 +6,4 @@ The original version was created by [Jim Riecken](http://www.jimr.ca/) in JavaSc
 
 This port is based on version 0.4.
 
-For more information on S 
+[More information on SAT](http://en.wikipedia.org/wiki/Hyperplane_separation_theorem)
