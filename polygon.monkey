@@ -132,6 +132,36 @@ Class Polygon Implements iBase
 		Return Self
 	End
 	
+	Method GetBounds:Box ()
+		Local len:Int = calcPoints.Length()
+		Local xMin:Float = calcPoints.Get(0).x + position.x
+		Local yMin:Float = calcPoints.Get(0).y + position.y
+		Local xMax:Float = xMin
+		Local yMax:Float = yMin
+		Local x:Float
+		Local y:Float
+		Local i:Int
+		
+		For i = 0 To len - 1
+			x = calcPoints.Get(i).x + position.x
+			y = calcPoints.Get(i).y + position.y
+			If (x < xMin)
+				xMin = x
+			Endif
+			If (x > xMax)
+				xMax = x
+			Endif
+			If (y < yMin)
+				yMin = y
+			Endif
+			If (y > yMax)
+				yMax = y
+			Endif
+		Next
+
+		Return New Box(New Vector(xMin, yMin), xMax - xMin, yMax - yMin)
+	End
+	
 	Method DebugDraw:Void ()
 		PushMatrix()
 		mojo.Translate(position.x, position.y)
