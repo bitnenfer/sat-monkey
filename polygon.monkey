@@ -16,6 +16,7 @@ Import mojo
 Import sat.vector
 Import sat.base
 Import sat.vecstack
+Import sat.box
 
 Class Polygon Implements iBase
 	
@@ -95,6 +96,7 @@ Class Polygon Implements iBase
 			points.Get(i).x += x
 			points.Get(i).y += y
 		Next
+		
 		Self.Recalc()
 		
 		Return Self
@@ -116,20 +118,20 @@ Class Polygon Implements iBase
 			If (angle <> 0)
 				calcPoint.Rotate(angle)
 			Endif
-			Self.calcPoints.Push(calcPoint)
+			calcPoints.Push(calcPoint)
 		Next
 		For i = 0 To len - 1
-			Local p1:Vector = Self.calcPoints.Get(i)
+			Local p1:Vector = calcPoints.Get(i)
 			Local p2:Vector
 			If (i < len - 1)
-				p2 = Self.calcPoints.Get(i + 1)
+				p2 = calcPoints.Get(i + 1)
 			Else
-				p2 = Self.calcPoints.Get(0)
+				p2 = calcPoints.Get(0)
 			Endif
 			Local e:Vector = New Vector().Copy(p2).Sub(p1)
 			Local n:Vector = New Vector().Copy(e).Perp().Normalize()
-			Self.edges.Push(e)
-			Self.normals.Push(n)
+			edges.Push(e)
+			normals.Push(n)
 		Next
 		Return Self
 	End
@@ -163,6 +165,7 @@ Class Polygon Implements iBase
 
 		Return New Box(New Vector(xMin, yMin), xMax - xMin, yMax - yMin)
 	End
+	
 	
 	Method DebugDraw:Void ()
 		PushMatrix()

@@ -169,6 +169,10 @@ Class SAT
 	End Function
 	
 	Function TestCircleCircle:Bool (a:Circle, b:Circle, response:Response = Null)
+		If (Not TestAABB(a.GetBounds(), b.GetBounds()))
+			Return False
+		Endif
+		
 		Local differenceV:Vector = T_VECTORS.Pop().Copy(b.position).Sub(a.position)
 		Local totalRadius:Float = a.radius + b.radius
 		Local totalRadiusSq:Float = totalRadius * totalRadius
@@ -205,6 +209,10 @@ Class SAT
 	End Function
 	
 	Function TestPolygonCircle:Bool (polygon:Polygon, circle:Circle, response:Response = Null)
+		If (Not TestAABB(polygon.GetBounds(), circle.GetBounds()))
+			Return False
+		Endif
+		
 		Local circlePos:Vector = T_VECTORS.Pop().Copy(circle.position).Sub(polygon.position)
 		Local radius:Float = circle.radius
 		Local radius2:Float = radius * radius
@@ -312,7 +320,7 @@ Class SAT
 	End Function
 	
 	Function TestCirclePolygon:Bool (circle:Circle, polygon:Polygon, response:Response = Null)
-		Local result:Bool = TestPolygonCircle(polygon, circle, response)
+		Local result:Bool = TestPolygonCircle(polygon, circle, response)	
 		Local a:iBase
 		Local aInB:Bool
 		
@@ -331,6 +339,10 @@ Class SAT
 	End Function
 	
 	Function TestPolygonPolygon:Bool (a:Polygon, b:Polygon, response:Response = Null)
+		If (Not TestAABB(a.GetBounds(), b.GetBounds()))
+			Return False
+		Endif
+		
 		Local aPoints:VecStack = a.calcPoints
 		Local aLen:Int = aPoints.Length()
 		Local bPoints:VecStack = b.calcPoints
@@ -355,4 +367,11 @@ Class SAT
 		Endif
 		Return True
 	End Function
+	
+	Function TestAABB:Bool (a:Box, b:Box)
+		Return Not (b.position.x > a.position.x + a.width Or
+			b.position.x + b.width < a.position.x Or
+			b.position.y > a.position.y + a.height Or
+			b.position.y + b.height < a.position.y)
+	End
 End
