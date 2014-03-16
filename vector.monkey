@@ -179,4 +179,8 @@ Class Vector Implements iBase
 	Method GetBounds:Box ()
 		Return New Box(New Vector(x, y), 1, 1)
 	End
+	
+	Method DebugDraw:Void ()
+		DrawPoint(x, y)
+	End
 End
