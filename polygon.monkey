@@ -95,6 +95,8 @@ Class Polygon Implements iBase
 			points.Get(i).x += x
 			points.Get(i).y += y
 		Next
+		Self.Recalc()
+		
 		Return Self
 	End
 	

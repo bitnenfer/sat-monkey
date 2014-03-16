@@ -38,6 +38,7 @@ Class Circle Implements iBase
 	Method DebugDraw:Void ()
 		PushMatrix()
 		Translate(position.x, position.y)
+		DrawCircle(0, 0, 4)
 		DrawCircleStroke(0, 0, radius)
 		PopMatrix()
 	End

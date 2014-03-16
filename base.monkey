@@ -15,4 +15,5 @@ Import sat.box
 
 Interface iBase
 	Method GetBounds:Box ()
+	Method DebugDraw:Void ()
 End
