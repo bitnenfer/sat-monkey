@@ -146,6 +146,7 @@ Class SAT
 	Public
 	
 	Const MAX_VALUE:Float = 1.7976931348623157e+308
+	Global TEST_BOUNDS_FIRST:Bool = True
 	
 	Function PointInCircle:Bool (p:Vector, c:Circle)
 		Local differenceV:Vector = T_VECTORS.Pop().Copy(p).Sub(c.position)
@@ -169,7 +170,7 @@ Class SAT
 	End Function
 	
 	Function TestCircleCircle:Bool (a:Circle, b:Circle, response:Response = Null)
-		If (Not TestAABB(a.GetBounds(), b.GetBounds()))
+		If (TEST_BOUNDS_FIRST And Not TestAABB(a.GetBounds(), b.GetBounds()))
 			Return False
 		Endif
 		
@@ -209,7 +210,7 @@ Class SAT
 	End Function
 	
 	Function TestPolygonCircle:Bool (polygon:Polygon, circle:Circle, response:Response = Null)
-		If (Not TestAABB(polygon.GetBounds(), circle.GetBounds()))
+		If (TEST_BOUNDS_FIRST And Not TestAABB(polygon.GetBounds(), circle.GetBounds()))
 			Return False
 		Endif
 		
@@ -339,7 +340,7 @@ Class SAT
 	End Function
 	
 	Function TestPolygonPolygon:Bool (a:Polygon, b:Polygon, response:Response = Null)
-		If (Not TestAABB(a.GetBounds(), b.GetBounds()))
+		If (TEST_BOUNDS_FIRST And Not TestAABB(a.GetBounds(), b.GetBounds()))
 			Return False
 		Endif
 		
