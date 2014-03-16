@@ -145,7 +145,7 @@ Class SAT
 	
 	Public
 	
-	Const MAX_VALUE:Float = 1.7976931348623157e+308
+	Const MAX_VALUE:Float = 99999999999999
 	Global TEST_BOUNDS_FIRST:Bool = True
 	
 	Function PointInCircle:Bool (p:Vector, c:Circle)
