@@ -8,6 +8,8 @@ This port is based on version 0.4.
 
 [More information on SAT](http://en.wikipedia.org/wiki/Hyperplane_separation_theorem)
 
+[Small Demo](http://dev.shin.cl/sat-monkey/demo/)
+
 Examples
 ---
 
