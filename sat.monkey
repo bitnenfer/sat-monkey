@@ -18,6 +18,7 @@ Import sat.box
 Import sat.polygon
 Import sat.circle
 Import sat.vecstack
+Import sat.quadtree
 
 Class SAT
 	
