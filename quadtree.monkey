@@ -13,15 +13,11 @@
 Strict
 
 Import sat
-Import diddy.functions
 
 Class QuadTree
 	
 	Private
 	
-	Field _children:iBase[]
-	
-	Field bounds:Box
 	Field depth:Int
 	Field maxDepth:Int
 	Field maxChildren:Int
@@ -30,14 +26,14 @@ Class QuadTree
 	Field hwidth:Float
 	Field hheight:Float
 	Field indexes:Int[4]
-	Field avg:Int = 0
-	Field frames:Int = 0
-	Field peak:Int = 0
 	Field x:Float
 	Field y:Float
 	Field width:Float
 	Field height:Float
 	Field returnObjects:Stack<iBase>
+	Field root:QuadTree
+	Field rWidth:Float
+	Field rHeight:Float
 	
 	Public
 	
@@ -46,7 +42,8 @@ Class QuadTree
 	Const BOTTOM_LEFT:Int = 2
 	Const BOTTOM_RIGHT:Int = 3
 	Const NONE:Int = -1
-	Method New (x:Float, y:Float, w:Float, h:Float, depth:Int = 0, maxDepth:Int = 4, maxChildren:Int = 4)
+	
+	Method New (x:Float, y:Float, w:Float, h:Float, depth:Int = 0, maxDepth:Int = 4, maxChildren:Int = 4, root:QuadTree = Null)
 		Self.depth = depth
 		Self.maxDepth = 4
 		Self.maxChildren = maxChildren
@@ -58,52 +55,41 @@ Class QuadTree
 		Self.y = y
 		Self.width = w
 		Self.height = h
+		If (depth = 0)
+			Self.root = Self
+		Else
+			Self.root = root
+		Endif
+		rWidth = Self.root.x + Self.root.width
+		rHeight = Self.root.y + Self.root.height
 		returnObjects = New Stack<iBase>()
 	End
 	
 	Method Split:Void ()
 		Local depth:Int = Self.depth + 1
-		
-		nodes[0] = New QuadTree(x, y, hwidth, hheight, depth, maxDepth, maxChildren)
-		nodes[1] = New QuadTree(x + hwidth, y, hwidth, hheight, depth, maxDepth, maxChildren)
-		nodes[2] = New QuadTree(x, y + hheight, hwidth, hheight, depth, maxDepth, maxChildren)
-		nodes[3] = New QuadTree(x + hwidth, y + hheight, hwidth, hheight, depth, maxDepth, maxChildren)
-	End
-	
-	Method GetIndex:Int (base:iBase)
-		Local b:Box = base.GetBounds()
-		Local bx:Float = b.position.x
-		Local by:Float = b.position.y
-		Local index:Int = -1
-		Local i:Int
-		Local len:Int = nodes.Length() - 1
-		
-		If (bx < x Or bx > x + width Or by < y Or by > y + height) Return -1
-		
-		If (bx < x + hwidth)
-			If (by < y + hheight)
-				index = BOTTOM_LEFT
-			Else
-				index = TOP_LEFT
-			Endif
-		Else
-			If (by < y + hheight)
-				index = BOTTOM_RIGHT
-			Else
-				index = BOTTOM_RIGHT
-			Endif
-		Endif
-		Return index
+		nodes[0] = New QuadTree(x, y, hwidth, hheight, depth, maxDepth, maxChildren, root)
+		nodes[1] = New QuadTree(x + hwidth, y, hwidth, hheight, depth, maxDepth, maxChildren, root)
+		nodes[2] = New QuadTree(x, y + hheight, hwidth, hheight, depth, maxDepth, maxChildren, root)
+		nodes[3] = New QuadTree(x + hwidth, y + hheight, hwidth, hheight, depth, maxDepth, maxChildren, root)
 	End
 	
 	Method GetIndexes:Int[] (base:iBase)
 		Local b:Box = base.GetBounds()
 		Local bx:Float = b.position.x
 		Local by:Float = b.position.y
+		Local bw:Float = bx + b.width
+		Local bh:Float = by + b.height
 		Local i:Int
 		Local len:Int = nodes.Length() - 1
 		
 		indexes = [-1, -1, -1, -1]
+		
+		If (bx > rWidth Or
+			bw < root.x Or
+			by > rHeight Or
+			bh < root.y)
+				Return [-1]
+		Endif
 		
 		If (bx <= x + hwidth)
 			If (by <= y + hheight)
@@ -113,7 +99,7 @@ Class QuadTree
 						Exit
 					Endif
 				Next
-				If (bx + b.width >= x + hwidth)
+				If (bw >= x + hwidth)
 					For i = 0 To len
 						If (indexes[i] = -1)
 							indexes[i] = TOP_RIGHT
@@ -122,14 +108,14 @@ Class QuadTree
 					Next
 				Endif
 			Endif
-			If (by + b.height >= y + hheight)
+			If (bh >= y + hheight)
 				For i = 0 To len
 					If (indexes[i] = -1)
 						indexes[i] = BOTTOM_LEFT
 						Exit
 					Endif
 				Next
-				If (bx + b.width >= x + hwidth)
+				If (bw >= x + hwidth)
 					For i = 0 To len
 						If (indexes[i] = -1)
 							indexes[i] = BOTTOM_RIGHT
@@ -146,7 +132,7 @@ Class QuadTree
 						Exit
 					Endif
 				Next
-				If (by + b.height > y + hheight)
+				If (bh > y + hheight)
 					For i = 0 To len
 						If (indexes[i] = -1)
 							indexes[i] = BOTTOM_RIGHT
@@ -171,47 +157,46 @@ Class QuadTree
 	Method Insert:Void (base:iBase)
 		Local i:Int
 		Local len:Int
+		Local indexes:Int[] = GetIndexes(base)
 		If (nodes[0] <> Null)
-			Local indexes:Int[] = GetIndexes(base)
 			len = indexes.Length() - 1
 			For i = 0 To len
 				If (indexes[i] <> -1) 
 					nodes[indexes[i]].Insert(base)
 				Endif
 			Next
-		Else
-			_children = _children.Resize(_children.Length() + 1)
-			_children[_children.Length() - 1] = base
-			If (_children.Length() > maxChildren And depth < maxDepth)
+		Elseif (indexes[0] <> -1)
+			children.Push(base)
+			If (children.Length() > maxChildren And depth < maxDepth)
 				Split()
-				len = _children.Length() - 1
+				len = children.Length() - 1
 				For i = 0 To len
-					Insert(_children[i])
+					Insert(children.Get(i))
 				Next
-				_children = _children.Resize(0)
+				children.Clear()
 			Endif		
 		Endif
-	End
+	End 
 	
 	Method Length:Int ()
-		Return _children.Length()
+		Return children.Length()
 	End
 	
 	Method Retrieve:Stack<iBase> (base:iBase)
 		returnObjects.Clear()
+		Local indexes:Int[] = GetIndexes(base)
 		If (nodes[0] <> Null)
-			returnObjects.Clear()
-			Local indexes:Int[] = GetIndexes(base)
-			
 			For Local i:Int = 0 To indexes.Length() - 1
 				If (indexes[i] <> -1) 
 					returnObjects.Push(nodes[indexes[i]].Retrieve(base).ToArray())
 				EndIf
 			Next
 		Else
-			returnObjects.Push(_children)
+			If (indexes[0] <> -1)
+				returnObjects.Push(children.ToArray())
+			Endif
 		Endif
-		Return returnObjects	
+		Return returnObjects
 	End
 	
 	Method Clear:Void ()
@@ -224,8 +209,18 @@ Class QuadTree
 				nodes[i] = Null
 			Endif
 		Next
-		
 		Self.children.Clear()
+	End
+	
+	Method SetBounds:Void (x:Float, y:Float, width:Float, height:Float)
+		Self.x = x
+		Self.y = y
+		Self.width = width
+		Self.height = height
+		Self.hwidth = width / 2
+		Self.hheight = height / 2
+		Self.rWidth = Self.root.x + Self.root.width
+		Self.rHeight = Self.root.y + Self.root.height
 	End
 	
 	Method DebugDraw:Void ()
