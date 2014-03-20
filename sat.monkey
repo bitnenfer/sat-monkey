@@ -28,6 +28,50 @@ Class SAT
 	Const MIDDLE_VORONI_REGION:Int = 0
 	Const RIGHT_VORONI_REGION:Int = 1
 	
+	' Caching
+	
+	Global tNext:Float
+	Global tPrev:Float
+	Global overlap:Float
+	Global overlapN:Vector
+	Global region:Int
+	Global point2:Vector
+	Global dist:Float
+	Global normal:Vector
+	Global distAbs:Float
+	Global rangeA:FloatStack
+	Global rangeB:FloatStack
+	Global offsetV:Vector
+	Global projectedOffset:Float
+	Global option1:Float
+	Global option2:Float
+	Global absOverlap:Float
+	Global min:Float
+	Global max:Float
+	Global len:Int
+	Global i:Int
+	Global dot:Float
+	Global len2:Float
+	Global dp:Float
+	Global differenceV:Vector
+	Global radiusSq:Float
+	Global distanceSq:Float
+	Global result:Bool
+	Global totalRadius:Float
+	Global totalRadiusSq:Float
+	Global circlePos:Vector
+	Global radius:Float
+	Global radius2:Float
+	Global points:VecStack
+	Global edge:Vector
+	Global point:Vector
+	Global a:iBase
+	Global aInB:Bool
+	Global aPoints:VecStack
+	Global aLen:Int
+	Global bPoints:VecStack
+	Global bLen:Int
+	
 	Global T_VECTORS:VecStack = New VecStack([
 		New Vector(), New Vector(), New Vector(),
 		New Vector(), New Vector(), New Vector(),
@@ -41,13 +85,12 @@ Class SAT
 	Global UNIT_SQUARE:Polygon = New Box(New Vector(), 1, 1).ToPolygon()
 	
 	Function FlattenPointsOn:Void (points:VecStack, normal:Vector, result:FloatStack)
-		Local min:Float = SAT.MAX_VALUE
-		Local max:Float = -SAT.MAX_VALUE
-		Local len:Int = points.Length()
-		Local i:Int
+		min = SAT.MAX_VALUE
+		max = -SAT.MAX_VALUE
+		len = points.Length()
 		
 		For i = 0 To len - 1
-			Local dot:Float = points.Get(i).Dot(normal)
+			dot = points.Get(i).Dot(normal)
 			If (dot < min) 
 				min = dot
 			Endif
@@ -65,11 +108,10 @@ Class SAT
 	End Function
 	
 	Function IsSeparatingAxis:Bool (aPos:Vector, bPos:Vector, aPoints:VecStack, bPoints:VecStack, axis:Vector, response:Response = Null)
-		Local rangeA:FloatStack = T_ARRAYS.Pop()
-		Local rangeB:FloatStack = T_ARRAYS.Pop()
-		Local offsetV:Vector = T_VECTORS.Pop().Copy(bPos).Sub(aPos)
-		Local projectedOffset:Float = offsetV.Dot(axis)
-		
+		rangeA = T_ARRAYS.Pop()
+		rangeB = T_ARRAYS.Pop()
+		offsetV = T_VECTORS.Pop().Copy(bPos).Sub(aPos)
+		projectedOffset = offsetV.Dot(axis)
 		
 		SAT.FlattenPointsOn(aPoints, axis, rangeA)
 		SAT.FlattenPointsOn(bPoints, axis, rangeB)
@@ -85,15 +127,15 @@ Class SAT
 		Endif
 		
 		If (response <> Null)
-			Local overlap:Float = 0
+			overlap = 0
 			If (rangeA.Get(0) < rangeB.Get(0))
 				response.aInB = False
 				If (rangeA.Get(1) < rangeB.Get(1))
 					overlap = rangeA.Get(1) - rangeB.Get(0)
 					response.bInA = False
 				Else
-					Local option1:Float = rangeA.Get(1) - rangeB.Get(0)
-					Local option2:Float = rangeB.Get(1) - rangeA.Get(0)
+					option1 = rangeA.Get(1) - rangeB.Get(0)
+					option2 = rangeB.Get(1) - rangeA.Get(0)
 					If (option1 < option2)
 						overlap = option1
 					Else
@@ -106,8 +148,8 @@ Class SAT
 					overlap = rangeA.Get(0) - rangeB.Get(1)
 					response.aInB = False
 				Else
-					Local option1:Float = rangeA.Get(1) - rangeB.Get(0)
-					Local option2:Float = rangeB.Get(1) - rangeA.Get(0)
+					option1 = rangeA.Get(1) - rangeB.Get(0)
+					option2 = rangeB.Get(1) - rangeA.Get(0)
 					If (option1 < option2)
 						overlap = option1
 					Else
@@ -115,7 +157,7 @@ Class SAT
 					Endif
 				Endif
 			Endif
-			Local absOverlap:Float = Abs(overlap)
+			absOverlap= Abs(overlap)
 			If (absOverlap < response.overlap)
 				response.overlap = absOverlap
 				response.overlapN.Copy(axis)
@@ -132,8 +174,8 @@ Class SAT
 	End Function
 	
 	Function VoroniRegion:Int (line:Vector, point:Vector)
-		Local len2:Float = line.Length2()
-		Local dp:Float = point.Dot(line)
+		len2 = line.Length2()
+		dp = point.Dot(line)
 		
 		If (dp < 0)
 			Return SAT.LEFT_VORONI_REGION
@@ -150,16 +192,14 @@ Class SAT
 	Global TEST_BOUNDS_FIRST:Bool = True
 	
 	Function PointInCircle:Bool (p:Vector, c:Circle)
-		Local differenceV:Vector = T_VECTORS.Pop().Copy(p).Sub(c.position)
-		Local radiusSq:Float = c.radius * c.radius
-		Local distanceSq:Float = differenceV.Length2()
+		differenceV = T_VECTORS.Pop().Copy(p).Sub(c.position)
+		radiusSq = c.radius * c.radius
+		distanceSq = differenceV.Length2()
 		
 		Return distanceSq <= radiusSq
 	End Function
 	
-	Function PointInPolygon:Bool (p:Vector, poly:Polygon)
-		Local result:Bool
-		
+	Function PointInPolygon:Bool (p:Vector, poly:Polygon)		
 		UNIT_SQUARE.position.Copy(p)
 		T_RESPONSE.Clear()
 		result = TestPolygonPolygon(UNIT_SQUARE, poly, T_RESPONSE)
@@ -175,11 +215,10 @@ Class SAT
 			Return False
 		Endif
 		
-		Local differenceV:Vector = T_VECTORS.Pop().Copy(b.position).Sub(a.position)
-		Local totalRadius:Float = a.radius + b.radius
-		Local totalRadiusSq:Float = totalRadius * totalRadius
-		Local distanceSq:Float = differenceV.Length2()
-		Local dist:Float
+		differenceV = T_VECTORS.Pop().Copy(b.position).Sub(a.position)
+		totalRadius = a.radius + b.radius
+		totalRadiusSq = totalRadius * totalRadius
+		distanceSq= differenceV.Length2()
 		
 		If (distanceSq > totalRadiusSq)
 			T_VECTORS.Push(differenceV)
@@ -215,20 +254,25 @@ Class SAT
 			Return False
 		Endif
 		
-		Local circlePos:Vector = T_VECTORS.Pop().Copy(circle.position).Sub(polygon.position)
-		Local radius:Float = circle.radius
-		Local radius2:Float = radius * radius
-		Local points:VecStack = polygon.calcPoints
-		Local len:Int = points.Length()
-		Local edge:Vector = T_VECTORS.Pop()
-		Local point:Vector = T_VECTORS.Pop()
-		Local i:Int
+		circlePos = T_VECTORS.Pop().Copy(circle.position).Sub(polygon.position)
+		radius = circle.radius
+		radius2 = radius * radius
+		points = polygon.calcPoints
+		len = points.Length()
+		edge = T_VECTORS.Pop()
+		point = T_VECTORS.Pop()
 		
 		For i = 0 To len - 1
-			Local tNext:Float
-			Local tPrev:Float
-			Local overlap:Float = 0
-			Local overlapN:Vector = Null
+			tNext = 0
+			tPrev = 0
+			overlap = 0
+			overlapN = Null
+			region = 0
+			point2 = Null
+			dist = 0
+			normal = Null
+			distAbs = 0
+			
 			If (i = len - 1)
 				tNext = 0
 			Else
@@ -245,14 +289,14 @@ Class SAT
 			If (response <> Null And point.Length2() > radius2)
 				response.aInB = False
 			Endif
-			Local region:Int = VoroniRegion(edge, point)
+			region = VoroniRegion(edge, point)
 			If (region = SAT.LEFT_VORONI_REGION)
 				edge.Copy(polygon.edges.Get(tPrev))
-				Local point2:Vector = T_VECTORS.Pop().Copy(circlePos).Sub(points.Get(tPrev))
+				point2 = T_VECTORS.Pop().Copy(circlePos).Sub(points.Get(tPrev))
 				region = VoroniRegion(edge, point2)
 				If (region = SAT.RIGHT_VORONI_REGION)
-					Local dist1:Float = point.Length()
-					If (dist1 > radius)
+					dist = point.Length()
+					If (dist > radius)
 						T_VECTORS.Push(circlePos)
 						T_VECTORS.Push(edge)
 						T_VECTORS.Push(point)
@@ -262,7 +306,7 @@ Class SAT
 					ElseIf (response <> Null)
 						response.bInA = False
 						overlapN = point.Normalize()
-						overlap = radius - dist1
+						overlap = radius - dist
 					Endif
 				Endif
 				T_VECTORS.Push(point2)
@@ -271,8 +315,8 @@ Class SAT
 				point.Copy(circlePos).Sub(points.Get(tNext))
 				region = VoroniRegion(edge, point)
 				If (region = SAT.LEFT_VORONI_REGION)
-					Local dist2:Float = point.Length()
-					If (dist2 > radius)
+					dist = point.Length()
+					If (dist > radius)
 						T_VECTORS.Push(circlePos)
 						T_VECTORS.Push(edge)
 						T_VECTORS.Push(point)
@@ -281,14 +325,14 @@ Class SAT
 					Elseif (response <> Null)
 						response.bInA = False
 						overlapN = point.Normalize()
-						overlap = radius - dist2
+						overlap = radius - dist
 					Endif
 				Endif
 			Else
-				Local normal:Vector = edge.Perp().Normalize()
-				Local dist3:Float = point.Dot(normal)
-				Local distAbs:float = Abs(dist3)
-				If (dist3 > 0 And distAbs > radius)
+				normal = edge.Perp().Normalize()
+				dist = point.Dot(normal)
+				distAbs = Abs(dist)
+				If (dist > 0 And distAbs > radius)
 					T_VECTORS.Push(circlePos)
 					T_VECTORS.Push(normal)
 					T_VECTORS.Push(point)
@@ -297,8 +341,8 @@ Class SAT
 				Elseif (response <> Null)
 					
 					overlapN = normal
-					overlap = radius - dist3
-					If (dist3 >= 0 Or overlap < 2 * radius)
+					overlap = radius - dist
+					If (dist >= 0 Or overlap < 2 * radius)
 						response.bInA = False
 					Endif
 				Endif
@@ -322,10 +366,7 @@ Class SAT
 	End Function
 	
 	Function TestCirclePolygon:Bool (circle:Circle, polygon:Polygon, response:Response = Null)
-		Local result:Bool = TestPolygonCircle(polygon, circle, response)	
-		Local a:iBase
-		Local aInB:Bool
-		
+		result = TestPolygonCircle(polygon, circle, response)
 		If (result And response <> Null)
 			a = response.a
 			aInB = response.aInB
@@ -345,20 +386,20 @@ Class SAT
 			Return False
 		Endif
 		
-		Local aPoints:VecStack = a.calcPoints
-		Local aLen:Int = aPoints.Length()
-		Local bPoints:VecStack = b.calcPoints
-		Local bLen:Int = bPoints.Length()
-		Local i:Int
+		aPoints = a.calcPoints
+		aLen = aPoints.Length()
+		bPoints = b.calcPoints
+		bLen = bPoints.Length()
+		Local j:Int
 		
-		For i = 0 To aLen - 1
-			If (IsSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals.Get(i), response))
+		For j = 0 To aLen - 1
+			If (IsSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals.Get(j), response))
 				Return False
 			Endif
 		Next
 		
-		For i = 0 To bLen - 1
-			If (IsSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals.Get(i), response))
+		For j = 0 To bLen - 1
+			If (IsSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals.Get(j), response))
 				Return False
 			Endif
 		Next
