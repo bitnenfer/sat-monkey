@@ -35,6 +35,15 @@ Class QuadTree
 	Field rWidth:Float
 	Field rHeight:Float
 	
+	' Caching
+	Field b:Box
+	Field bx:Float
+	Field by:Float
+	Field bw:Float
+	Field bh:Float
+	Field i:Int
+	Field len:Int
+	
 	Public
 	
 	Const TOP_LEFT:Int = 0
@@ -74,13 +83,13 @@ Class QuadTree
 	End
 	
 	Method GetIndexes:Int[] (base:iBase)
-		Local b:Box = base.GetBounds()
-		Local bx:Float = b.position.x
-		Local by:Float = b.position.y
-		Local bw:Float = bx + b.width
-		Local bh:Float = by + b.height
-		Local i:Int
-		Local len:Int = nodes.Length() - 1
+		b = base.GetBounds()
+		bx = b.position.x
+		by = b.position.y
+		bw = bx + b.width
+		bh = by + b.height
+		i = 0
+		len = nodes.Length() - 1
 		
 		indexes = [-1, -1, -1, -1]
 		
@@ -157,7 +166,7 @@ Class QuadTree
 	Method Insert:Void (base:iBase)
 		Local i:Int
 		Local len:Int
-		Local indexes:Int[] = GetIndexes(base)
+		indexes = GetIndexes(base)
 		If (nodes[0] <> Null)
 			len = indexes.Length() - 1
 			For i = 0 To len
@@ -184,9 +193,10 @@ Class QuadTree
 	
 	Method Retrieve:Stack<iBase> (base:iBase)
 		returnObjects.Clear()
-		Local indexes:Int[] = GetIndexes(base)
+		indexes = GetIndexes(base)
 		If (nodes[0] <> Null)
-			For Local i:Int = 0 To indexes.Length() - 1
+			len = indexes.Length() - 1
+			For i = 0 To len
 				If (indexes[i] <> -1) 
 					returnObjects.Push(nodes[indexes[i]].Retrieve(base).ToArray())
 				EndIf
@@ -200,9 +210,7 @@ Class QuadTree
 	End
 	
 	Method Clear:Void ()
-		Local i:Int
-		Local len:Int = nodes.Length() - 1
-		
+		len = nodes.Length() - 1
 		For i = 0 To len
 			If (nodes[i] <> Null)
 				nodes[i].Clear()
@@ -224,9 +232,7 @@ Class QuadTree
 	End
 	
 	Method DebugDraw:Void ()
-		Local i:Int
-		Local len:Int = nodes.Length() - 1
-		
+		len = nodes.Length() - 1
 		If (nodes[0] <> Null)
 			For i = 0 To len
 				nodes[i].DebugDraw()
