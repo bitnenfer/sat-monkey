@@ -65,7 +65,7 @@ Class SAT
 	Global points:VecStack
 	Global edge:Vector
 	Global point:Vector
-	Global a:iBase
+	Global a:iSAT
 	Global aInB:Bool
 	Global aPoints:VecStack
 	Global aLen:Int

@@ -11,9 +11,19 @@
 #END
 
 Strict
-Import sat.box
 
-Interface iBase
+Import sat.box
+Import sat.vector
+
+Const POLYGON:Int = 0
+Const CIRCLE:Int = 1
+Const VECTOR:Int = 3
+
+Interface iSAT
 	Method GetBounds:Box ()
 	Method DebugDraw:Void ()
+	Method GetPosition:Vector ()
+	Method SetPosition:Void (x:Float, y:Float)
+	Method SetPosition:Void (vec:Vector)
+	Method GetType:Int ()
 End

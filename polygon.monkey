@@ -18,7 +18,7 @@ Import sat.base
 Import sat.vecstack
 Import sat.box
 
-Class Polygon Implements iBase
+Class Polygon Implements iSAT
 	
 	Private
 	
@@ -182,6 +182,21 @@ Class Polygon Implements iBase
 		Return bounds
 	End
 	
+	Method GetPosition:Vector ()
+		Return position
+	End
+	
+	Method SetPosition:Void (x:Float, y:Float)
+		position.Copy(x, y)
+	End
+	
+	Method SetPosition:Void (vec:Vector)
+		position.Copy(vec)
+	End
+	
+	Method GetType:Int ()
+		Return POLYGON
+	End
 	
 	Method DebugDraw:Void ()
 		PushMatrix()

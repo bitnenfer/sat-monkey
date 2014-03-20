@@ -21,7 +21,7 @@ Class QuadTree
 	Field depth:Int
 	Field maxDepth:Int
 	Field maxChildren:Int
-	Field children:Stack<iBase>
+	Field children:Stack<iSAT>
 	Field nodes:QuadTree[4]
 	Field hwidth:Float
 	Field hheight:Float
@@ -30,7 +30,7 @@ Class QuadTree
 	Field y:Float
 	Field width:Float
 	Field height:Float
-	Field returnObjects:Stack<iBase>
+	Field returnObjects:Stack<iSAT>
 	Field root:QuadTree
 	Field rWidth:Float
 	Field rHeight:Float
@@ -58,7 +58,7 @@ Class QuadTree
 		Self.maxChildren = maxChildren
 		Self.hwidth = w / 2
 		Self.hheight = h / 2
-		Self.children = New Stack<iBase>()
+		Self.children = New Stack<iSAT>()
 		Self.indexes = [-1, -1, -1, -1]
 		Self.x = x
 		Self.y = y
@@ -71,7 +71,7 @@ Class QuadTree
 		Endif
 		rWidth = Self.root.x + Self.root.width
 		rHeight = Self.root.y + Self.root.height
-		returnObjects = New Stack<iBase>()
+		returnObjects = New Stack<iSAT>()
 	End
 	
 	Method Split:Void ()
@@ -82,7 +82,7 @@ Class QuadTree
 		nodes[3] = New QuadTree(x + hwidth, y + hheight, hwidth, hheight, depth, maxDepth, maxChildren, root)
 	End
 	
-	Method GetIndexes:Int[] (base:iBase)
+	Method GetIndexes:Int[] (base:iSAT)
 		b = base.GetBounds()
 		bx = b.position.x
 		by = b.position.y
@@ -163,7 +163,7 @@ Class QuadTree
 		Return indexes
 	End
 	
-	Method Insert:Void (base:iBase)
+	Method Insert:Void (base:iSAT)
 		Local i:Int
 		Local len:Int
 		indexes = GetIndexes(base)
@@ -191,7 +191,7 @@ Class QuadTree
 		Return children.Length()
 	End
 	
-	Method Retrieve:Stack<iBase> (base:iBase)
+	Method Retrieve:Stack<iSAT> (base:iSAT)
 		returnObjects.Clear()
 		indexes = GetIndexes(base)
 		If (nodes[0] <> Null)
