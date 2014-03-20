@@ -23,7 +23,7 @@ Class Game Extends App
 		quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 		response = New Response()
 		For Local i:Int = 0 To 300
-			Local p:Polygon = New Polygon(New Vector(Rnd(100, DeviceWidth()-100), Rnd(100, DeviceHeight-100)), 
+			Local p:Polygon = New Polygon(New Vector(Rnd(100, DeviceWidth()-100), Rnd(100, DeviceHeight()-100)), 
 					New VecStack([New Vector(0, 0), New Vector(10, 0), New Vector(10, 10), New Vector(0, 10)]))
 			p.Translate(-5, -5)
 			pool.Push(p)
@@ -58,9 +58,7 @@ Class Game Extends App
 			Local t:Polygon
 			For Local i:Int = 0 To pool.Length() - 1
 				t = pool.Get(i)
-				If (useQuad)
-					quadTree.Insert(t)
-				EndIf
+				quadTree.Insert(t)
 				returnObjects = quadTree.Retrieve(t)
 				For Local j:Int = 0 To returnObjects.Length() - 1
 					p = Polygon(returnObjects.Get(j))
