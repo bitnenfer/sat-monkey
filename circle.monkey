@@ -17,7 +17,7 @@ Import sat.vector
 Import sat.base
 Import sat.box
 
-Class Circle Implements iBase
+Class Circle Implements iSAT
 	
 	Field position:Vector
 	Field radius:Float
@@ -38,9 +38,25 @@ Class Circle Implements iBase
 	Method DebugDraw:Void ()
 		PushMatrix()
 		Translate(position.x, position.y)
-		DrawCircle(0, 0, 4)
+		DrawPoint(0, 0)
 		DrawCircleStroke(0, 0, radius)
 		PopMatrix()
+	End
+	
+	Method GetPosition:Vector ()
+		Return position
+	End
+	
+	Method SetPosition:Void (x:Float, y:Float)
+		position.Copy(x, y)
+	End
+	
+	Method SetPosition:Void (vec:Vector)
+		position.Copy(vec)
+	End
+	
+	Method GetType:Int ()
+		Return CIRCLE
 	End
 	
 	#REM

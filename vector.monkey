@@ -14,7 +14,7 @@ Strict
 
 Import sat.base
 
-Class Vector Implements iBase
+Class Vector Implements iSAT
 
 	Field x:Float
 	Field y:Float
@@ -178,6 +178,22 @@ Class Vector Implements iBase
 	
 	Method GetBounds:Box ()
 		Return New Box(New Vector(x, y), 1, 1)
+	End
+	
+	Method GetPosition:Vector ()
+		Return Self
+	End
+	
+	Method SetPosition:Void (x:Float, y:Float)
+		Self.Copy(x, y)
+	End
+	
+	Method SetPosition:Void (vec:Vector)
+		Self.Copy(vec)
+	End
+	
+	Method GetType:Int ()
+		Return VECTOR
 	End
 	
 	Method DebugDraw:Void ()

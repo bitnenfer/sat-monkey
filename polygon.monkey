@@ -18,7 +18,17 @@ Import sat.base
 Import sat.vecstack
 Import sat.box
 
-Class Polygon Implements iBase
+Class Polygon Implements iSAT
+	
+	Private
+	
+	Field xMin:Float
+	Field yMin:Float
+	Field xMax:Float
+	Field yMax:Float
+	Field bounds:Box
+	
+	Public
 	
 	Field position:Vector
 	Field points:VecStack
@@ -36,6 +46,7 @@ Class Polygon Implements iBase
 		Self.edges = New VecStack()
 		Self.normals = New VecStack()
 		Self.calcPoints = New VecStack()
+		Self.bounds = New Box(New Vector(0, 0), 0, 0);
 		Self.Recalc()
 	End
 	
@@ -138,10 +149,10 @@ Class Polygon Implements iBase
 	
 	Method GetBounds:Box ()
 		Local len:Int = calcPoints.Length()
-		Local xMin:Float = calcPoints.Get(0).x + position.x
-		Local yMin:Float = calcPoints.Get(0).y + position.y
-		Local xMax:Float = xMin
-		Local yMax:Float = yMin
+		xMin = calcPoints.Get(0).x + position.x
+		yMin = calcPoints.Get(0).y + position.y
+		xMax = xMin
+		yMax = yMin
 		Local x:Float
 		Local y:Float
 		Local i:Int
@@ -162,15 +173,35 @@ Class Polygon Implements iBase
 				yMax = y
 			Endif
 		Next
+		
+		bounds.position.x = xMin
+		bounds.position.y = yMin
+		bounds.width = xMax - xMin
+		bounds.height = yMax - yMin
 
-		Return New Box(New Vector(xMin, yMin), xMax - xMin, yMax - yMin)
+		Return bounds
 	End
 	
+	Method GetPosition:Vector ()
+		Return position
+	End
+	
+	Method SetPosition:Void (x:Float, y:Float)
+		position.Copy(x, y)
+	End
+	
+	Method SetPosition:Void (vec:Vector)
+		position.Copy(vec)
+	End
+	
+	Method GetType:Int ()
+		Return POLYGON
+	End
 	
 	Method DebugDraw:Void ()
 		PushMatrix()
 		mojo.Translate(position.x, position.y)
-		DrawCircle(0, 0, 4)
+		DrawPoint(0, 0)
 		Local p:Vector
 		Local n:Vector
 		For Local i:Int = 0 To calcPoints.Length() - 1

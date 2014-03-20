@@ -18,8 +18,8 @@ Import sat.base
 
 Class Response
 	
-	Field a:iBase = Null
-	Field b:iBase = Null
+	Field a:iSAT = Null
+	Field b:iSAT = Null
 	Field overlapN:Vector
 	Field overlapV:Vector
 	Field aInB:Bool
