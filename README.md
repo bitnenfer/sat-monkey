@@ -6,6 +6,13 @@ The original version was created by [Jim Riecken](http://www.jimr.ca/) in JavaSc
 
 This port is based on version 0.4.
 
+The code for this module was unit tested with Capuchin.
+If you want to run the test you need to add it.
+
+The url for Capuchin can be found here:
+
+[https://github.com/ilovepixel/capuchin](https://github.com/ilovepixel/capuchin)
+
 [More information on SAT](http://en.wikipedia.org/wiki/Hyperplane_separation_theorem)
 
 [Small Demo](http://dev.shin.cl/sat-monkey/demo/)

@@ -250,6 +250,106 @@ Class TestPointOverCircle Extends Test Implements iSpec
 	End
 End
 
+Class TestQuadTree Extends Test Implements iSpec
+	Method New()
+		Super.New()
+		It("Should subdivide when more than the limit of objects are inserted", Self)
+		It("Should clear the nodes when the quadtree is cleared", Self)
+		It("Should return the correct objects inside the node that is being checked", Self)
+	End
+	
+	Method Execute:Void (testNum:Int, spec:Spec)
+		Select (testNum)
+			Case 0
+				Local quadTree:QuadTree
+				Local result:Int = 0
+				Local nodes:QuadTree[]
+				Local circle:Circle
+				Local poly:Polygon
+				Local t:Int = 0
+				
+				quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
+				For Local i:Int = 0 Until 5
+					If (t = 0)
+						circle = New Circle( New Vector(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()) ), 10)
+						quadTree.Insert(circle)
+						t = 1
+					Else
+						poly = New Polygon(New Vector(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight())), 
+							New VecStack([New Vector(0, 0), New Vector(100, 0), New Vector(100, 100), New Vector(0, 100)]))
+						quadTree.Insert(poly)
+						t = 0
+					Endif
+				Next
+				nodes = quadTree.GetNodes()
+				For Local i:Int = 0 To nodes.Length() - 1
+					If (nodes[i] <> Null)
+						result += 1
+					Endif
+				Next
+				spec.Expect(result).ToEqual(4)
+				spec.Done()
+			Case 1
+				Local quadTree:QuadTree
+				Local result:Int = 0
+				Local nodes:QuadTree[]
+				Local circle:Circle
+				Local poly:Polygon
+				Local t:Int = 0
+				
+				quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
+				For Local i:Int = 0 Until 5
+					If (t = 0)
+						circle = New Circle( New Vector(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()) ), 10)
+						quadTree.Insert(circle)
+						t = 1
+					Else
+						poly = New Polygon(New Vector(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight())), 
+							New VecStack([New Vector(0, 0), New Vector(100, 0), New Vector(100, 100), New Vector(0, 100)]))
+						quadTree.Insert(poly)
+						t = 0
+					Endif
+				Next
+				quadTree.Clear()
+				nodes = quadTree.GetNodes()
+				For Local i:Int = 0 To nodes.Length() - 1
+					If (nodes[i] <> Null)
+						result += 1
+					Endif
+				Next
+				spec.Expect(result).ToEqual(0)
+				spec.Done()
+			Case 2
+				Local quadTree:QuadTree
+				Local returnObjects:Stack<iSAT>
+				Local result:Int = 0
+				Local nodes:QuadTree[]
+				Local circle:Circle
+				Local poly:Polygon
+				Local t:Int = 0
+				
+				quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
+				For Local i:Int = 0 Until 5
+					circle = New Circle(New Vector(0, 0), 10)
+					quadTree.Insert(circle)
+				Next
+				
+				circle = New Circle(New Vector(DeviceWidth() - 100, DeviceHeight() - 100), 10)
+				poly = New Polygon(New Vector(DeviceWidth() - 20, DeviceHeight() - 50), New VecStack([
+					New Vector(0, 0), New Vector(100, 0)]))
+				
+				quadTree.Insert(circle)
+				quadTree.Insert(poly)
+				
+				returnObjects = quadTree.Retrieve(circle)
+				
+				' I am checking 1 because 0 is the circle
+				spec.Expect((Polygon(returnObjects.Get(1)) = poly)).BeTrue()
+				spec.Done()
+		End	
+	End
+End
+
 Class SATTest Extends App
 	
 	Field testEnv:TestEnviroment
@@ -262,6 +362,7 @@ Class SATTest Extends App
 		testEnv.Describe("Polygons not Colliding", New TestNoCollisionBox())
 		testEnv.Describe("Point over Polygon", New TestPointOverPolygon())
 		testEnv.Describe("Point over Circle", New TestPointOverCircle())
+		testEnv.Describe("QuadTree Test", New TestQuadTree())
 		
 		testEnv.Start()
 		SetUpdateRate(60)
