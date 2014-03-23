@@ -9,6 +9,10 @@ This port is based on version 0.4.
 The code for this module was unit tested with Capuchin.
 If you want to run the test you need to add it.
 
+You can try the tests here:
+
+[http://dev.shin.cl/sat-monkey/tests/](http://dev.shin.cl/sat-monkey/tests/)
+
 The url for Capuchin can be found here:
 
 [https://github.com/ilovepixel/capuchin](https://github.com/ilovepixel/capuchin)
