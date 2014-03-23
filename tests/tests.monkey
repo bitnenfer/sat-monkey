@@ -355,6 +355,7 @@ Class SATTest Extends App
 	Field testEnv:TestEnviroment
 	
 	Method OnCreate:Int ()
+		TestEnviroment.PRINT_TEST = True
 		testEnv = New TestEnviroment()
 		
 		testEnv.Describe("Polygon To Polygon Collision", New TestPolygonToPolygon())
