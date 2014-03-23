@@ -1,0 +1,3 @@
+[submodule "tests/capuchin"]
+	path = tests/capuchin
+	url = git@github.com:ilovepixel/capuchin.git

@@ -82,6 +82,10 @@ Class QuadTree
 		nodes[3] = New QuadTree(x + hwidth, y + hheight, hwidth, hheight, depth, maxDepth, maxChildren, root)
 	End
 	
+	Method GetNodes:QuadTree[] ()
+		Return nodes
+	End
+	
 	Method GetIndexes:Int[] (base:iSAT)
 		b = base.GetBounds()
 		bx = b.position.x
