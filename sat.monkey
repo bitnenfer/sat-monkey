@@ -195,6 +195,7 @@ Class SAT
 		differenceV = T_VECTORS.Pop().Copy(p).Sub(c.position)
 		radiusSq = c.radius * c.radius
 		distanceSq = differenceV.Length2()
+		T_VECTORS.Push(differenceV)
 		
 		Return distanceSq <= radiusSq
 	End Function
