@@ -24,6 +24,10 @@ Class Vec2 Implements iSAT
 		Self.y = y
 	End
 	
+	Method Empty:Bool ()
+		Return Self.x = 0 And Self.y = 0
+	End
+	
 	Method Copy:Vec2 (other:Vec2)
 		Self.x = other.x
 		Self.y = other.y
