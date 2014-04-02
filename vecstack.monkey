@@ -12,14 +12,14 @@
 
 Strict
 
-Import sat.vector2
+Import sat.vec2
 
-Class VecStack Extends Stack<Vector2>
+Class VecStack Extends Stack<Vec2>
 	Method New ()
 		Super.New()
 	End
 	
-	Method New (data:Vector2[])
+	Method New (data:Vec2[])
 		Super.New(data)
 	End
 	

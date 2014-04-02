@@ -13,7 +13,7 @@
 Strict
 
 Import mojo
-Import sat.vector2
+Import sat.vec2
 Import sat.base
 Import sat.vecstack
 Import sat.rectangle
@@ -30,23 +30,23 @@ Class Polygon Implements iSAT
 	
 	Public
 	
-	Field position:Vector2
+	Field position:Vec2
 	Field points:VecStack
 	Field angle:Float
-	Field offset:Vector2
+	Field offset:Vec2
 	Field edges:VecStack
 	Field normals:VecStack
 	Field calcPoints:VecStack
 	
-	Method New (pos:Vector2 = New Vector2(), points:VecStack = New VecStack())
+	Method New (pos:Vec2 = New Vec2(), points:VecStack = New VecStack())
 		Self.position = pos
 		Self.angle = 0
 		Self.points = points
-		Self.offset = New Vector2()
+		Self.offset = New Vec2()
 		Self.edges = New VecStack()
 		Self.normals = New VecStack()
 		Self.calcPoints = New VecStack()
-		Self.bounds = New Rectangle(New Vector2(0, 0), 0, 0);
+		Self.bounds = New Rectangle(New Vec2(0, 0), 0, 0);
 		Self.Recalc()
 	End
 	
@@ -78,7 +78,7 @@ Class Polygon Implements iSAT
 		Return Self
 	End
 	
-	Method SetOffset:Polygon (offset:Vector2)
+	Method SetOffset:Polygon (offset:Vec2)
 		Self.offset = offset
 		Self.Recalc()
 		
@@ -118,12 +118,12 @@ Class Polygon Implements iSAT
 		Local calcPoints:VecStack = Self.calcPoints.Wipe()
 		Local normals:VecStack = Self.normals.Wipe()
 		Local points:VecStack = Self.points
-		Local offset:Vector2 = Self.offset
+		Local offset:Vec2 = Self.offset
 		Local angle:Float = Self.angle
 		Local len:Int = points.Length()
 		Local i:Int
 		For i = 0 To len - 1
-			Local calcPoint:Vector2 = points.Get(i).Clone()
+			Local calcPoint:Vec2 = points.Get(i).Clone()
 			calcPoint.x += offset.x
 			calcPoint.y += offset.y
 			If (angle <> 0)
@@ -132,15 +132,15 @@ Class Polygon Implements iSAT
 			calcPoints.Push(calcPoint)
 		Next
 		For i = 0 To len - 1
-			Local p1:Vector2 = calcPoints.Get(i)
-			Local p2:Vector2
+			Local p1:Vec2 = calcPoints.Get(i)
+			Local p2:Vec2
 			If (i < len - 1)
 				p2 = calcPoints.Get(i + 1)
 			Else
 				p2 = calcPoints.Get(0)
 			Endif
-			Local e:Vector2 = New Vector2().Copy(p2).Sub(p1)
-			Local n:Vector2 = New Vector2().Copy(e).Perp().Normalize()
+			Local e:Vec2 = New Vec2().Copy(p2).Sub(p1)
+			Local n:Vec2 = New Vec2().Copy(e).Perp().Normalize()
 			edges.Push(e)
 			normals.Push(n)
 		Next
@@ -182,7 +182,7 @@ Class Polygon Implements iSAT
 		Return bounds
 	End
 	
-	Method GetPosition:Vector2 ()
+	Method GetPosition:Vec2 ()
 		Return position
 	End
 	
@@ -190,7 +190,7 @@ Class Polygon Implements iSAT
 		position.Copy(x, y)
 	End
 	
-	Method SetPosition:Void (vec:Vector2)
+	Method SetPosition:Void (vec:Vec2)
 		position.Copy(vec)
 	End
 	
@@ -202,8 +202,8 @@ Class Polygon Implements iSAT
 		PushMatrix()
 		mojo.Translate(position.x, position.y)
 		DrawPoint(0, 0)
-		Local p:Vector2
-		Local n:Vector2
+		Local p:Vec2
+		Local n:Vec2
 		For Local i:Int = 0 To calcPoints.Length() - 1
 			If (i > 0)
 				n = calcPoints.Get(i - 1)

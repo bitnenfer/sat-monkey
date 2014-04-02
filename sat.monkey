@@ -12,7 +12,7 @@
 
 Strict
 
-Import sat.vector2
+Import sat.vec2
 Import sat.response
 Import sat.rectangle
 Import sat.polygon
@@ -33,15 +33,15 @@ Class SAT
 	Global tNext:Float
 	Global tPrev:Float
 	Global overlap:Float
-	Global overlapN:Vector2
+	Global overlapN:Vec2
 	Global region:Int
-	Global point2:Vector2
+	Global point2:Vec2
 	Global dist:Float
-	Global normal:Vector2
+	Global normal:Vec2
 	Global distAbs:Float
 	Global rangeA:FloatStack
 	Global rangeB:FloatStack
-	Global offsetV:Vector2
+	Global offsetV:Vec2
 	Global projectedOffset:Float
 	Global option1:Float
 	Global option2:Float
@@ -53,18 +53,18 @@ Class SAT
 	Global dot:Float
 	Global len2:Float
 	Global dp:Float
-	Global differenceV:Vector2
+	Global differenceV:Vec2
 	Global radiusSq:Float
 	Global distanceSq:Float
 	Global result:Bool
 	Global totalRadius:Float
 	Global totalRadiusSq:Float
-	Global circlePos:Vector2
+	Global circlePos:Vec2
 	Global radius:Float
 	Global radius2:Float
 	Global points:VecStack
-	Global edge:Vector2
-	Global point:Vector2
+	Global edge:Vec2
+	Global point:Vec2
 	Global a:iSAT
 	Global aInB:Bool
 	Global aPoints:VecStack
@@ -73,18 +73,18 @@ Class SAT
 	Global bLen:Int
 	
 	Global T_VECTORS:VecStack = New VecStack([
-		New Vector2(), New Vector2(), New Vector2(),
-		New Vector2(), New Vector2(), New Vector2(),
-		New Vector2(), New Vector2(), New Vector2()])
+		New Vec2(), New Vec2(), New Vec2(),
+		New Vec2(), New Vec2(), New Vec2(),
+		New Vec2(), New Vec2(), New Vec2()])
 		
 	Global T_ARRAYS:Stack<FloatStack> = New Stack<FloatStack>([
 		New FloatStack(), New FloatStack(), New FloatStack(),
 		New FloatStack()])
 		
 	Global T_RESPONSE:Response = New Response()
-	Global UNIT_SQUARE:Polygon = New Rectangle(New Vector2(), 1, 1).ToPolygon()
+	Global UNIT_SQUARE:Polygon = New Rectangle(New Vec2(), 1, 1).ToPolygon()
 	
-	Function FlattenPointsOn:Void (points:VecStack, normal:Vector2, result:FloatStack)
+	Function FlattenPointsOn:Void (points:VecStack, normal:Vec2, result:FloatStack)
 		min = SAT.MAX_VALUE
 		max = -SAT.MAX_VALUE
 		len = points.Length()
@@ -107,7 +107,7 @@ Class SAT
 		EndIf
 	End Function
 	
-	Function IsSeparatingAxis:Bool (aPos:Vector2, bPos:Vector2, aPoints:VecStack, bPoints:VecStack, axis:Vector2, response:Response = Null)
+	Function IsSeparatingAxis:Bool (aPos:Vec2, bPos:Vec2, aPoints:VecStack, bPoints:VecStack, axis:Vec2, response:Response = Null)
 		rangeA = T_ARRAYS.Pop()
 		rangeB = T_ARRAYS.Pop()
 		offsetV = T_VECTORS.Pop().Copy(bPos).Sub(aPos)
@@ -173,7 +173,7 @@ Class SAT
 		Return False
 	End Function
 	
-	Function VoroniRegion:Int (line:Vector2, point:Vector2)
+	Function VoroniRegion:Int (line:Vec2, point:Vec2)
 		len2 = line.Length2()
 		dp = point.Dot(line)
 		
@@ -191,7 +191,7 @@ Class SAT
 	Const MAX_VALUE:Float = 99999999999999
 	Global TEST_BOUNDS_FIRST:Bool = True
 	
-	Function PointInCircle:Bool (p:Vector2, c:Circle)
+	Function PointInCircle:Bool (p:Vec2, c:Circle)
 		differenceV = T_VECTORS.Pop().Copy(p).Sub(c.position)
 		radiusSq = c.radius * c.radius
 		distanceSq = differenceV.Length2()
@@ -200,7 +200,7 @@ Class SAT
 		Return distanceSq <= radiusSq
 	End Function
 	
-	Function PointInPolygon:Bool (p:Vector2, poly:Polygon)		
+	Function PointInPolygon:Bool (p:Vec2, poly:Polygon)		
 		UNIT_SQUARE.position.Copy(p)
 		T_RESPONSE.Clear()
 		result = TestPolygonPolygon(UNIT_SQUARE, poly, T_RESPONSE)

@@ -8,9 +8,9 @@ Class CircleToPolygon Extends App
 	Field polygon:Polygon
 	Field response:Response
 	Method OnCreate:Int()
-		polygon = New Polygon(New Vector2(160, 120), New VecStack([
-			New Vector2(0,0), New Vector2(60, 0), New Vector2(100, 40), New Vector2(60, 80), New Vector2(0, 80)]))
-		circle = New Circle(New Vector2(300, 300), 20)
+		polygon = New Polygon(New Vec2(160, 120), New VecStack([
+			New Vec2(0,0), New Vec2(60, 0), New Vec2(100, 40), New Vec2(60, 80), New Vec2(0, 80)]))
+		circle = New Circle(New Vec2(300, 300), 20)
 		response = New Response()
 		polygon.Translate(-30, -40)
 		SetUpdateRate(60)
