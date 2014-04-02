@@ -176,8 +176,8 @@ Class Vector Implements iSAT
 		Return Sqrt(Self.Length2())
 	End
 	
-	Method GetBounds:Box ()
-		Return New Box(New Vector(x, y), 1, 1)
+	Method GetBounds:Rectangle ()
+		Return New Rectangle(New Vector(x, y), 1, 1)
 	End
 	
 	Method GetPosition:Vector ()

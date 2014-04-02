@@ -36,7 +36,7 @@ Class QuadTree
 	Field rHeight:Float
 	
 	' Caching
-	Field b:Box
+	Field b:Rectangle
 	Field bx:Float
 	Field by:Float
 	Field bw:Float

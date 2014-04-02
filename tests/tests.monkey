@@ -155,7 +155,7 @@ Class TestPolygonToCircle Extends Test Implements iSpec
 	End
 End
 
-Class TestNoCollisionBox Extends Test Implements iSpec
+Class TestNoCollisionRectangle Extends Test Implements iSpec
 	
 	Method New ()
 		Super.New()
@@ -169,8 +169,8 @@ Class TestNoCollisionBox Extends Test Implements iSpec
 				Local box2:Polygon
 				Local collide:Bool = True
 				
-				box1 = New Box(New Vector(0, 0), 20, 20).ToPolygon()
-				box2 = New Box(New Vector(100, 100), 20, 20).ToPolygon()
+				box1 = New Rectangle(New Vector(0, 0), 20, 20).ToPolygon()
+				box2 = New Rectangle(New Vector(100, 100), 20, 20).ToPolygon()
 				collide = SAT.TestPolygonPolygon(box1, box2)
 				spec.Expect(collide).BeFalse()
 				spec.Done()
@@ -360,7 +360,7 @@ Class SATTest Extends App
 		
 		testEnv.Describe("Polygon To Polygon Collision", New TestPolygonToPolygon())
 		testEnv.Describe("Polygon To Circle Collision", New TestPolygonToCircle())
-		testEnv.Describe("Polygons not Colliding", New TestNoCollisionBox())
+		testEnv.Describe("Polygons not Colliding", New TestNoCollisionRectangle())
 		testEnv.Describe("Point over Polygon", New TestPointOverPolygon())
 		testEnv.Describe("Point over Circle", New TestPointOverCircle())
 		testEnv.Describe("QuadTree Test", New TestQuadTree())

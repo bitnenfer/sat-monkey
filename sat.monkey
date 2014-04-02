@@ -14,7 +14,7 @@ Strict
 
 Import sat.vector
 Import sat.response
-Import sat.box
+Import sat.rectangle
 Import sat.polygon
 Import sat.circle
 Import sat.vecstack
@@ -82,7 +82,7 @@ Class SAT
 		New FloatStack()])
 		
 	Global T_RESPONSE:Response = New Response()
-	Global UNIT_SQUARE:Polygon = New Box(New Vector(), 1, 1).ToPolygon()
+	Global UNIT_SQUARE:Polygon = New Rectangle(New Vector(), 1, 1).ToPolygon()
 	
 	Function FlattenPointsOn:Void (points:VecStack, normal:Vector, result:FloatStack)
 		min = SAT.MAX_VALUE
@@ -411,7 +411,7 @@ Class SAT
 		Return True
 	End Function
 	
-	Function TestAABB:Bool (a:Box, b:Box)
+	Function TestAABB:Bool (a:Rectangle, b:Rectangle)
 		Return Not (b.position.x > a.position.x + a.width Or
 			b.position.x + b.width < a.position.x Or
 			b.position.y > a.position.y + a.height Or

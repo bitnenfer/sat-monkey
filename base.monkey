@@ -12,7 +12,7 @@
 
 Strict
 
-Import sat.box
+Import sat.rectangle
 Import sat.vector
 
 Const POLYGON:Int = 0
@@ -20,7 +20,7 @@ Const CIRCLE:Int = 1
 Const VECTOR:Int = 3
 
 Interface iSAT
-	Method GetBounds:Box ()
+	Method GetBounds:Rectangle ()
 	Method DebugDraw:Void ()
 	Method GetPosition:Vector ()
 	Method SetPosition:Void (x:Float, y:Float)

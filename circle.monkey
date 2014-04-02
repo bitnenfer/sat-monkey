@@ -15,7 +15,7 @@ Strict
 Import mojo
 Import sat.vector
 Import sat.base
-Import sat.box
+Import sat.rectangle
 
 Class Circle Implements iSAT
 	
@@ -27,12 +27,12 @@ Class Circle Implements iSAT
 		Self.radius = radius
 	End
 	
-	Method GetBounds:Box ()
+	Method GetBounds:Rectangle ()
 		Local x:Float = position.x - radius
 		Local y:Float = position.y - radius
 		Local w:Float = radius * 2
 		
-		Return New Box(New Vector(x, y), w, w)
+		Return New Rectangle(New Vector(x, y), w, w)
 	End
 	
 	Method DebugDraw:Void ()

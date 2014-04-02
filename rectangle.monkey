@@ -16,7 +16,7 @@ Import sat.vector
 Import sat.polygon
 Import sat.base
 
-Class Box Implements iSAT
+Class Rectangle Implements iSAT
 	
 	Field position:Vector
 	Field width:Float
@@ -38,7 +38,7 @@ Class Box Implements iSAT
 		New Vector(w, h), New Vector(0, h)]))
 	End
 	
-	Method GetBounds:Box ()
+	Method GetBounds:Rectangle ()
 		Return ToPolygon().GetBounds()
 	End
 	

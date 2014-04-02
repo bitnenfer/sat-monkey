@@ -16,7 +16,7 @@ Import mojo
 Import sat.vector
 Import sat.base
 Import sat.vecstack
-Import sat.box
+Import sat.rectangle
 
 Class Polygon Implements iSAT
 	
@@ -26,7 +26,7 @@ Class Polygon Implements iSAT
 	Field yMin:Float
 	Field xMax:Float
 	Field yMax:Float
-	Field bounds:Box
+	Field bounds:Rectangle
 	
 	Public
 	
@@ -46,7 +46,7 @@ Class Polygon Implements iSAT
 		Self.edges = New VecStack()
 		Self.normals = New VecStack()
 		Self.calcPoints = New VecStack()
-		Self.bounds = New Box(New Vector(0, 0), 0, 0);
+		Self.bounds = New Rectangle(New Vector(0, 0), 0, 0);
 		Self.Recalc()
 	End
 	
@@ -147,7 +147,7 @@ Class Polygon Implements iSAT
 		Return Self
 	End
 	
-	Method GetBounds:Box ()
+	Method GetBounds:Rectangle ()
 		Local len:Int = calcPoints.Length()
 		xMin = calcPoints.Get(0).x + position.x
 		yMin = calcPoints.Get(0).y + position.y
