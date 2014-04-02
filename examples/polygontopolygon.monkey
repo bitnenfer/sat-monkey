@@ -8,10 +8,10 @@ Class PolygonToPolygon Extends App
 	Field polygon2:Polygon
 	Field response:Response
 	Method OnCreate:Int()
-		polygon1 = New Polygon(New Vector(160, 120), New VecStack([
-			New Vector(0,0), New Vector(60, 0), New Vector(100, 40), New Vector(60, 80), New Vector(0, 80)]))
-		polygon2 = New Polygon(New Vector(10, 10), New VecStack([
-			New Vector(0, 0), New Vector(30, 0), New Vector(30, 30), New Vector(0, 30)]))
+		polygon1 = New Polygon(New Vector2(160, 120), New VecStack([
+			New Vector2(0,0), New Vector2(60, 0), New Vector2(100, 40), New Vector2(60, 80), New Vector2(0, 80)]))
+		polygon2 = New Polygon(New Vector2(10, 10), New VecStack([
+			New Vector2(0, 0), New Vector2(30, 0), New Vector2(30, 30), New Vector2(0, 30)]))
 		response = New Response()
 		polygon2.Translate(-15, -15)
 		SetUpdateRate(60)

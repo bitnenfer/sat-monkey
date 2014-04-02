@@ -14,8 +14,8 @@ Class Game Extends App
 	Field poly1:Polygon
 	
 	Method OnCreate:Int ()
-		poly1 = New Polygon(New Vector(0, 0), New VecStack([
-			New Vector(0,0), New Vector(60, 0), New Vector(100, 40), New Vector(60, 80), New Vector(0, 80)]))
+		poly1 = New Polygon(New Vector2(0, 0), New VecStack([
+			New Vector2(0,0), New Vector2(60, 0), New Vector2(100, 40), New Vector2(60, 80), New Vector2(0, 80)]))
 			
 		poly1.Translate(-poly1.GetBounds().width / 2, -poly1.GetBounds().height / 2)
 		pool = New Stack<Polygon>()
@@ -23,8 +23,8 @@ Class Game Extends App
 		quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 		response = New Response()
 		For Local i:Int = 0 To 300
-			Local p:Polygon = New Polygon(New Vector(Rnd(100, DeviceWidth()-100), Rnd(100, DeviceHeight()-100)), 
-					New VecStack([New Vector(0, 0), New Vector(10, 0), New Vector(10, 10), New Vector(0, 10)]))
+			Local p:Polygon = New Polygon(New Vector2(Rnd(100, DeviceWidth()-100), Rnd(100, DeviceHeight()-100)), 
+					New VecStack([New Vector2(0, 0), New Vector2(10, 0), New Vector2(10, 10), New Vector2(0, 10)]))
 			p.Translate(-5, -5)
 			pool.Push(p)
 		Next

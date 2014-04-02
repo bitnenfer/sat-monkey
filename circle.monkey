@@ -13,16 +13,16 @@
 Strict
 
 Import mojo
-Import sat.vector
+Import sat.vector2
 Import sat.base
 Import sat.rectangle
 
 Class Circle Implements iSAT
 	
-	Field position:Vector
+	Field position:Vector2
 	Field radius:Float
 	
-	Method New (pos:Vector, radius:Float)
+	Method New (pos:Vector2, radius:Float)
 		Self.position = pos
 		Self.radius = radius
 	End
@@ -32,7 +32,7 @@ Class Circle Implements iSAT
 		Local y:Float = position.y - radius
 		Local w:Float = radius * 2
 		
-		Return New Rectangle(New Vector(x, y), w, w)
+		Return New Rectangle(New Vector2(x, y), w, w)
 	End
 	
 	Method DebugDraw:Void ()
@@ -43,7 +43,7 @@ Class Circle Implements iSAT
 		PopMatrix()
 	End
 	
-	Method GetPosition:Vector ()
+	Method GetPosition:Vector2 ()
 		Return position
 	End
 	
@@ -51,7 +51,7 @@ Class Circle Implements iSAT
 		position.Copy(x, y)
 	End
 	
-	Method SetPosition:Void (vec:Vector)
+	Method SetPosition:Void (vec:Vector2)
 		position.Copy(vec)
 	End
 	

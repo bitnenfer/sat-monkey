@@ -8,8 +8,8 @@ Class CircleToCircle Extends App
 	Field circle2:Circle
 	Field response:Response
 	Method OnCreate:Int()
-		circle1 = New Circle(New Vector(160, 120), 30)
-		circle2 = New Circle(New Vector(30, 30), 10)
+		circle1 = New Circle(New Vector2(160, 120), 30)
+		circle2 = New Circle(New Vector2(30, 30), 10)
 		response = New Response()
 		SetUpdateRate(60)
 		Return 0

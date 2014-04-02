@@ -14,7 +14,7 @@ Strict
 
 Import sat.base
 
-Class Vector Implements iSAT
+Class Vector2 Implements iSAT
 
 	Field x:Float
 	Field y:Float
@@ -24,25 +24,25 @@ Class Vector Implements iSAT
 		Self.y = y
 	End
 	
-	Method Copy:Vector (other:Vector)
+	Method Copy:Vector2 (other:Vector2)
 		Self.x = other.x
 		Self.y = other.y
 		
 		Return Self
 	End
 	
-	Method Copy:Vector (x:Float, y:Float)
+	Method Copy:Vector2 (x:Float, y:Float)
 		Self.x = x
 		Self.y = y
 		
 		Return Self
 	End
 	
-	Method Clone:Vector ()
-		Return New Vector(Self.x, Self.y)
+	Method Clone:Vector2 ()
+		Return New Vector2(Self.x, Self.y)
 	End
 	
-	Method Perp:Vector ()
+	Method Perp:Vector2 ()
 		Local x:Float = Self.x
 		
 		Self.x = Self.y
@@ -51,7 +51,7 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method Rotate:Vector (angle:Float)
+	Method Rotate:Vector2 (angle:Float)
 		Local x:Float = Self.x
 		Local y:Float = Self.y
 		
@@ -61,7 +61,7 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method RotatePrecalc:Vector (sin:Float, cos:Float)
+	Method RotatePrecalc:Vector2 (sin:Float, cos:Float)
 		Local x:Float = Self.x 
 		Local y:Float = Self.y
 		
@@ -71,14 +71,14 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method Reverse:Vector ()
+	Method Reverse:Vector2 ()
 		Self.x = -Self.x
 		Self.y = -Self.y
 		
 		Return Self
 	End
 	
-	Method Normalize:Vector ()
+	Method Normalize:Vector2 ()
 		Local d:Float = Self.Length()
 		
 		If (d > 0)
@@ -89,42 +89,42 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method Add:Vector (other:Vector)
+	Method Add:Vector2 (other:Vector2)
 		Self.x += other.x
 		Self.y += other.y
 		
 		Return Self
 	End
 	
-	Method Sub:Vector (other:Vector)
+	Method Sub:Vector2 (other:Vector2)
 		Self.x -= other.x
 		Self.y -= other.y
 		
 		Return Self
 	End
 	
-	Method Multiply:Vector (other:Vector)
+	Method Multiply:Vector2 (other:Vector2)
 		Self.x *= other.x
 		Self.y *= other.y
 		
 		Return Self
 	End
 	
-	Method Scale:Vector (value:Float)
+	Method Scale:Vector2 (value:Float)
 		Self.x *= value
 		Self.y *= value
 		
 		Return Self
 	End
 	
-	Method Scale:Vector (x:Float, y:Float)
+	Method Scale:Vector2 (x:Float, y:Float)
 		Self.x *= x
 		Self.y *= y
 		
 		Return Self
 	End
 	
-	Method Project:Vector (other:Vector)
+	Method Project:Vector2 (other:Vector2)
 		Local amt:Float = Self.Dot(other) / other.Length2()
 		
 		Self.x = amt * other.x
@@ -133,7 +133,7 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method ProjectN:Vector (other:Vector)
+	Method ProjectN:Vector2 (other:Vector2)
 		Local amt:Float = Self.Dot(other)
 		
 		Self.x = amt * other.x
@@ -142,7 +142,7 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method Reflect:Vector (axis:Vector)
+	Method Reflect:Vector2 (axis:Vector2)
 		Local x:Float = Self.x
 		Local y:Float = Self.y
 		
@@ -153,7 +153,7 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method ReflectN:Vector (axis:Vector)
+	Method ReflectN:Vector2 (axis:Vector2)
 		Local x:Float = Self.x
 		Local y:Float = Self.y
 		
@@ -164,7 +164,7 @@ Class Vector Implements iSAT
 		Return Self
 	End
 	
-	Method Dot:Float (other:Vector)
+	Method Dot:Float (other:Vector2)
 		Return Self.x * other.x + Self.y * other.y
 	End
 	
@@ -177,10 +177,10 @@ Class Vector Implements iSAT
 	End
 	
 	Method GetBounds:Rectangle ()
-		Return New Rectangle(New Vector(x, y), 1, 1)
+		Return New Rectangle(New Vector2(x, y), 1, 1)
 	End
 	
-	Method GetPosition:Vector ()
+	Method GetPosition:Vector2 ()
 		Return Self
 	End
 	
@@ -188,7 +188,7 @@ Class Vector Implements iSAT
 		Self.Copy(x, y)
 	End
 	
-	Method SetPosition:Void (vec:Vector)
+	Method SetPosition:Void (vec:Vector2)
 		Self.Copy(vec)
 	End
 	

@@ -12,7 +12,7 @@
 
 Strict
 
-Import sat.vector
+Import sat.vector2
 Import sat.sat
 Import sat.base
 
@@ -20,15 +20,15 @@ Class Response
 	
 	Field a:iSAT = Null
 	Field b:iSAT = Null
-	Field overlapN:Vector
-	Field overlapV:Vector
+	Field overlapN:Vector2
+	Field overlapV:Vector2
 	Field aInB:Bool
 	Field bInA:Bool
 	Field overlap:Float
 	
 	Method New ()
-		overlapN = New Vector()
-		overlapV = New Vector()
+		overlapN = New Vector2()
+		overlapV = New Vector2()
 		Self.Clear()
 	End
 	
