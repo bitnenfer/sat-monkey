@@ -1,5 +1,5 @@
 #REM
-	Version 0.4 - Copyright 2014 -  Jim Riecken <jimr@jimr.ca>
+	Version 0.4.1 - Copyright 2014 -  Jim Riecken <jimr@jimr.ca>
 	Released under the MIT License - https://github.com/jriecken/sat-js
 	A simple library for determining intersections of circles and
 	polygons using the Separating Axis Theorem.
@@ -195,6 +195,7 @@ Class SAT
 		differenceV = T_VECTORS.Pop().Copy(p).Sub(c.position)
 		radiusSq = c.radius * c.radius
 		distanceSq = differenceV.Length2()
+		T_VECTORS.Push(differenceV)
 		
 		Return distanceSq <= radiusSq
 	End Function
