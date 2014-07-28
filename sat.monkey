@@ -82,7 +82,7 @@ Class SAT
 		New FloatStack()])
 		
 	Global T_RESPONSE:Response = New Response()
-	Global UNIT_SQUARE:Polygon = New Rectangle(New Vec2(), 1, 1).ToPolygon()
+	Global UNIT_SQUARE:Polygon = New Rectangle(0, 0, 1, 1).ToPolygon()
 	
 	Function FlattenPointsOn:Void (points:VecStack, normal:Vec2, result:FloatStack)
 		min = SAT.MAX_VALUE
@@ -192,7 +192,7 @@ Class SAT
 	Global TEST_BOUNDS_FIRST:Bool = True
 	
 	Function PointInCircle:Bool (p:Vec2, c:Circle)
-		differenceV = T_VECTORS.Pop().Copy(p).Sub(c.position)
+		differenceV = T_VECTORS.Pop().Copy(p).Sub(c)
 		radiusSq = c.radius * c.radius
 		distanceSq = differenceV.Length2()
 		T_VECTORS.Push(differenceV)
@@ -201,7 +201,7 @@ Class SAT
 	End Function
 	
 	Function PointInPolygon:Bool (p:Vec2, poly:Polygon)		
-		UNIT_SQUARE.position.Copy(p)
+		UNIT_SQUARE.Copy(p)
 		T_RESPONSE.Clear()
 		result = TestPolygonPolygon(UNIT_SQUARE, poly, T_RESPONSE)
 		If (result)
@@ -216,7 +216,7 @@ Class SAT
 			Return False
 		Endif
 		
-		differenceV = T_VECTORS.Pop().Copy(b.position).Sub(a.position)
+		differenceV = T_VECTORS.Pop().Copy(b).Sub(a)
 		totalRadius = a.radius + b.radius
 		totalRadiusSq = totalRadius * totalRadius
 		distanceSq= differenceV.Length2()
@@ -255,7 +255,7 @@ Class SAT
 			Return False
 		Endif
 		
-		circlePos = T_VECTORS.Pop().Copy(circle.position).Sub(polygon.position)
+		circlePos = T_VECTORS.Pop().Copy(circle).Sub(polygon)
 		radius = circle.radius
 		radius2 = radius * radius
 		points = polygon.calcPoints
@@ -394,13 +394,13 @@ Class SAT
 		Local j:Int
 		
 		For j = 0 To aLen - 1
-			If (IsSeparatingAxis(a.position, b.position, aPoints, bPoints, a.normals.Get(j), response))
+			If (IsSeparatingAxis(a, b, aPoints, bPoints, a.normals.Get(j), response))
 				Return False
 			Endif
 		Next
 		
 		For j = 0 To bLen - 1
-			If (IsSeparatingAxis(a.position, b.position, aPoints, bPoints, b.normals.Get(j), response))
+			If (IsSeparatingAxis(a, b, aPoints, bPoints, b.normals.Get(j), response))
 				Return False
 			Endif
 		Next
@@ -413,9 +413,9 @@ Class SAT
 	End Function
 	
 	Function TestAABB:Bool (a:Rectangle, b:Rectangle)
-		Return Not (b.position.x > a.position.x + a.width Or
-			b.position.x + b.width < a.position.x Or
-			b.position.y > a.position.y + a.height Or
-			b.position.y + b.height < a.position.y)
+		Return Not (b.x > a.x + a.width Or
+			b.x +b.width < a.x Or
+			b.y > a.y + a.height Or
+			b.y +b.height < a.y)
 	End
 End

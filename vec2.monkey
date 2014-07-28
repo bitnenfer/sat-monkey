@@ -35,7 +35,7 @@ Class Vec2 Implements iSAT
 		Return Self
 	End
 	
-	Method Copy:Vec2 (x:Float, y:Float)
+	Method Set:Vec2(x:Float, y:Float)
 		Self.x = x
 		Self.y = y
 		
@@ -181,7 +181,7 @@ Class Vec2 Implements iSAT
 	End
 	
 	Method GetBounds:Rectangle ()
-		Return New Rectangle(New Vec2(x, y), 1, 1)
+		Return New Rectangle(x, y, 1, 1)
 	End
 	
 	Method GetPosition:Vec2 ()
@@ -197,7 +197,7 @@ Class Vec2 Implements iSAT
 	End
 	
 	Method GetType:Int ()
-		Return VECTOR
+		Return ShapeType.VECTOR
 	End
 	
 	Method DebugDraw:Void ()

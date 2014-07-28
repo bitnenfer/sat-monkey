@@ -88,8 +88,8 @@ Class QuadTree
 	
 	Method GetIndexes:Int[] (base:iSAT)
 		b = base.GetBounds()
-		bx = b.position.x
-		by = b.position.y
+		bx = b.x
+		by = b.y
 		bw = bx + b.width
 		bh = by + b.height
 		i = 0

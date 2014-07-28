@@ -39,17 +39,17 @@ Class CircleToCircle Extends App
 	Field circle2:Circle
 	Field response:Response
 	Method OnCreate:Int()
-		circle1 = New Circle(New Vec2(160, 120), 30)
-		circle2 = New Circle(New Vec2(30, 30), 10)
+		circle1 = New Circle(160, 120, 30)
+		circle2 = New Circle(30, 30, 10)
 		response = New Response()
 		SetUpdateRate(60)
 		Return 0
 	End
 	
 	Method OnUpdate:Int()
-		circle1.position.Copy(MouseX(), MouseY())
+		circle1.Set(MouseX(), MouseY())
 		If (SAT.TestCircleCircle(circle1, circle2, response))
-			circle2.position.Add(response.overlapV)
+			circle2.Add(response.overlapV)
 		Endif
 		response.Clear()
 		Return 0
@@ -84,9 +84,9 @@ Class CircleToPolygon Extends App
 	Field polygon:Polygon
 	Field response:Response
 	Method OnCreate:Int()
-		polygon = New Polygon(New Vec2(160, 120), New VecStack([
+		polygon = New Polygon(160, 120, New VecStack([
 			New Vec2(0,0), New Vec2(60, 0), New Vec2(100, 40), New Vec2(60, 80), New Vec2(0, 80)]))
-		circle = New Circle(New Vec2(300, 300), 20)
+		circle = New Circle(300, 300, 20)
 		response = New Response()
 		polygon.Translate(-30, -40)
 		SetUpdateRate(60)
@@ -94,10 +94,10 @@ Class CircleToPolygon Extends App
 	End
 	
 	Method OnUpdate:Int()
-		circle.position.Copy(MouseX(), MouseY())
-		polygon.Rotate(1)
+		circle.Set(MouseX(), MouseY())
+		polygon.RotatePolygon(1)
 		If (SAT.TestCirclePolygon(circle, polygon, response))
-			polygon.position.Add(response.overlapV)
+			polygon.Add(response.overlapV)
 		Endif
 		response.Clear()
 		Return 0
@@ -132,9 +132,9 @@ Class PolygonToPolygon Extends App
 	Field polygon2:Polygon
 	Field response:Response
 	Method OnCreate:Int()
-		polygon1 = New Polygon(New Vec2(160, 120), New VecStack([
+		polygon1 = New Polygon(160, 120, New VecStack([
 			New Vec2(0,0), New Vec2(60, 0), New Vec2(100, 40), New Vec2(60, 80), New Vec2(0, 80)]))
-		polygon2 = New Polygon(New Vec2(10, 10), New VecStack([
+		polygon2 = New Polygon(10, 10, New VecStack([
 			New Vec2(0, 0), New Vec2(30, 0), New Vec2(30, 30), New Vec2(0, 30)]))
 		response = New Response()
 		polygon2.Translate(-15, -15)
@@ -143,11 +143,11 @@ Class PolygonToPolygon Extends App
 	End
 	
 	Method OnUpdate:Int()
-		polygon2.position.Copy(MouseX(), MouseY())
+		polygon2.Set(MouseX(), MouseY())
 		If (SAT.TestPolygonPolygon(polygon2, polygon1, response))
-			polygon1.position.Add(response.overlapV)
+			polygon1.Add(response.overlapV)
 		Endif
-		polygon2.Rotate(1)
+		polygon2.RotatePolygon(1)
 		response.Clear()
 		Return 0
 	End
@@ -187,7 +187,7 @@ Class Game Extends App
 	Field poly1:Polygon
 	
 	Method OnCreate:Int ()
-		poly1 = New Polygon(New Vec2(0, 0), New VecStack([
+		poly1 = New Polygon(0, 0, New VecStack([
 			New Vec2(0,0), New Vec2(60, 0), New Vec2(100, 40), New Vec2(60, 80), New Vec2(0, 80)]))
 			
 		poly1.Translate(-poly1.GetBounds().width / 2, -poly1.GetBounds().height / 2)
@@ -196,7 +196,7 @@ Class Game Extends App
 		quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 		response = New Response()
 		For Local i:Int = 0 To 300
-			Local p:Polygon = New Polygon(New Vec2(Rnd(100, DeviceWidth()-100), Rnd(100, DeviceHeight-100)), 
+			Local p:Polygon = New Polygon(Rnd(100, DeviceWidth()-100, Rnd(100, DeviceHeight-100)), 
 					New VecStack([New Vec2(0, 0), New Vec2(10, 0), New Vec2(10, 10), New Vec2(0, 10)]))
 			p.Translate(-5, -5)
 			pool.Push(p)
@@ -207,8 +207,8 @@ Class Game Extends App
 	End
 	
 	Method OnUpdate:Int ()
-		poly1.position.Copy(MouseX(), MouseY())
-		poly1.Rotate(3)
+		poly1.Set(MouseX(), MouseY())
+		poly1.RotatePolygon(3)
 		If (KeyHit(KEY_SPACE))
 			useQuad = (Not useQuad = True)
 		Endif
@@ -238,8 +238,8 @@ Class Game Extends App
 				For Local j:Int = 0 To returnObjects.Length() - 1
 					p = Polygon(returnObjects.Get(j))
 					If (t <> p And SAT.TestPolygonPolygon(t, p, response))
-						If (p <> poly1) p.position.Add(response.overlapV)
-						If (t <> poly1) t.position.Sub(response.overlapV)
+						If (p <> poly1) p.Add(response.overlapV)
+						If (t <> poly1) t.Sub(response.overlapV)
 					Endif
 					response.Clear()
 				Next
@@ -256,8 +256,8 @@ Class Game Extends App
 				For Local j:Int = 0 To pool.Length() - 1
 					p = pool.Get(j)
 					If (t <> p And SAT.TestPolygonPolygon(t, p, response))
-						If (p <> poly1) p.position.Add(response.overlapV)
-						If (t <> poly1) t.position.Sub(response.overlapV)
+						If (p <> poly1) p.Add(response.overlapV)
+						If (t <> poly1) t.Sub(response.overlapV)
 					Endif
 					response.Clear()
 				Next
@@ -270,7 +270,7 @@ Class Game Extends App
 		
 		For Local i:Int = 0 To pool.Length() - 1
 			o = pool.Get(i)
-			If (o <> poly1) o.Rotate(-1)
+			If (o <> poly1) o.RotatePolygon(-1)
 		Next
 		
 		If (useQuad)

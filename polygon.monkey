@@ -18,7 +18,7 @@ Import sat.base
 Import sat.vecstack
 Import sat.rectangle
 
-Class Polygon Implements iSAT
+Class Polygon Extends Vec2
 	
 	Private
 	
@@ -30,7 +30,6 @@ Class Polygon Implements iSAT
 	
 	Public
 	
-	Field position:Vec2
 	Field points:VecStack
 	Field angle:Float
 	Field offset:Vec2
@@ -38,19 +37,19 @@ Class Polygon Implements iSAT
 	Field normals:VecStack
 	Field calcPoints:VecStack
 	
-	Method New (pos:Vec2 = New Vec2(), points:VecStack = New VecStack())
-		Self.position = pos
+	Method New(x:Float, y:Float, points:VecStack = New VecStack())
+		Super.New(x, y)
 		Self.angle = 0
 		Self.points = points
 		Self.offset = New Vec2()
 		Self.edges = New VecStack()
 		Self.normals = New VecStack()
 		Self.calcPoints = New VecStack()
-		Self.bounds = New Rectangle(New Vec2(0, 0), 0, 0);
+		Self.bounds = New Rectangle();
 		Self.Recalc()
 	End
 	
-	Method Scale:Polygon (x:Float, y:Float)
+	Method ScalePolygon:Polygon(x:Float, y:Float)
 		Local i:Int
 		Local points:VecStack = Self.points
 		Local edges:VecStack = Self.edges
@@ -85,7 +84,7 @@ Class Polygon Implements iSAT
 		Return Self
 	End
 	
-	Method Rotate:Polygon (angle:Float)
+	Method RotatePolygon:Polygon (angle:Float)
 		Local points:VecStack = Self.points
 		Local len:Int = points.Length()
 		Local i:Int
@@ -149,8 +148,8 @@ Class Polygon Implements iSAT
 	
 	Method GetBounds:Rectangle ()
 		Local len:Int = calcPoints.Length()
-		xMin = calcPoints.Get(0).x + position.x
-		yMin = calcPoints.Get(0).y + position.y
+		xMin = calcPoints.Get(0).x + Self.x
+		yMin = calcPoints.Get(0).y + Self.y
 		xMax = xMin
 		yMax = yMin
 		Local x:Float
@@ -158,8 +157,8 @@ Class Polygon Implements iSAT
 		Local i:Int
 		
 		For i = 0 To len - 1
-			x = calcPoints.Get(i).x + position.x
-			y = calcPoints.Get(i).y + position.y
+			x = calcPoints.Get(i).x + Self.x
+			y = calcPoints.Get(i).y + Self.y
 			If (x < xMin)
 				xMin = x
 			Endif
@@ -174,8 +173,8 @@ Class Polygon Implements iSAT
 			Endif
 		Next
 		
-		bounds.position.x = xMin
-		bounds.position.y = yMin
+		bounds.x = xMin
+		bounds.y = yMin
 		bounds.width = xMax - xMin
 		bounds.height = yMax - yMin
 
@@ -183,24 +182,24 @@ Class Polygon Implements iSAT
 	End
 	
 	Method GetPosition:Vec2 ()
-		Return position
+		Return Self
 	End
 	
 	Method SetPosition:Void (x:Float, y:Float)
-		position.Copy(x, y)
+		Self.Set(x, y)
 	End
 	
 	Method SetPosition:Void (vec:Vec2)
-		position.Copy(vec)
+		Self.Copy(vec)
 	End
 	
 	Method GetType:Int ()
-		Return POLYGON
+		Return ShapeType.POLYGON
 	End
 	
 	Method DebugDraw:Void ()
 		PushMatrix()
-		mojo.Translate(position.x, position.y)
+		mojo.Translate(x, y)
 		DrawPoint(0, 0)
 		Local p:Vec2
 		Local n:Vec2
