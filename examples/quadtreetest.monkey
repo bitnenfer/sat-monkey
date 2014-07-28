@@ -1,9 +1,4 @@
-Method GetBounds:Rectangle ()
-	Method DebugDraw:Void ()
-	Method GetPosition:Vector ()
-	Method SetPosition:Void (x:Float, y:Float)
-	Method SetPosition:Void (vec:Vector)
-	Method GetType:Int ()Strict
+Strict
 
 Import mojo
 Import sat
