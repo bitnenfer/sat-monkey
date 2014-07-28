@@ -16,24 +16,23 @@ Import sat.vec2
 Import sat.polygon
 Import sat.base
 
-Class Rectangle Implements iSAT
+Class Rectangle Extends Vec2
 	
-	Field position:Vec2
 	Field width:Float
 	Field height:Float
 	
-	Method New(pos:Vec2 = New Vec2(), width:Float = 0.0, height:Float = 0.0)
-		Self.position = pos
+	Method New(x:Float = 0.0, y:Float = 0.0, width:Float = 0.0, height:Float = 0.0)
+		Super.New(x, y)
 		Self.width = width
 		Self.height = height
 	End
 	
 	Method ToPolygon:Polygon ()
-		Local pos:Vec2 = Self.position
+		Local pos:Vec2 = Self
 		Local w:Float = Self.width
 		Local h:Float = Self.height
 		
-		Return New Polygon(New Vec2(pos.x, pos.y), New VecStack([
+		Return New Polygon(pos.x, pos.y, New VecStack([
 		New Vec2(), New Vec2(w, 0), 
 		New Vec2(w, h), New Vec2(0, h)]))
 	End
@@ -47,18 +46,18 @@ Class Rectangle Implements iSAT
 	End
 	
 	Method GetPosition:Vec2 ()
-		Return position
+		Return Self
 	End
 	
 	Method SetPosition:Void (x:Float, y:Float)
-		position.Copy(x, y)
+		Self.Set(x, y)
 	End
 	
 	Method SetPosition:Void (vec:Vec2)
-		position.Copy(vec)
+		Self.Copy(vec)
 	End
 	
 	Method GetType:Int ()
-		Return POLYGON
+		Return ShapeType.POLYGON
 	End
 End

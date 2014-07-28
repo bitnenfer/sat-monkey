@@ -17,46 +17,45 @@ Import sat.vec2
 Import sat.base
 Import sat.rectangle
 
-Class Circle Implements iSAT
+Class Circle Extends Vec2
 	
-	Field position:Vec2
 	Field radius:Float
 	
-	Method New (pos:Vec2, radius:Float)
-		Self.position = pos
+	Method New(x:Float, y:Float, radius:Float)
+		Super.New(x, y)
 		Self.radius = radius
 	End
 	
 	Method GetBounds:Rectangle ()
-		Local x:Float = position.x - radius
-		Local y:Float = position.y - radius
+		Local x:Float = Self.x - radius
+		Local y:Float = Self.y - radius
 		Local w:Float = radius * 2
 		
-		Return New Rectangle(New Vec2(x, y), w, w)
+		Return New Rectangle(x, y, w, w)
 	End
 	
 	Method DebugDraw:Void ()
 		PushMatrix()
-		Translate(position.x, position.y)
+		Translate(Self.x, Self.y)
 		DrawPoint(0, 0)
 		DrawCircleStroke(0, 0, radius)
 		PopMatrix()
 	End
 	
 	Method GetPosition:Vec2 ()
-		Return position
+		Return Self
 	End
 	
 	Method SetPosition:Void (x:Float, y:Float)
-		position.Copy(x, y)
+		Self.Set(x, y)
 	End
 	
 	Method SetPosition:Void (vec:Vec2)
-		position.Copy(vec)
+		Self.Copy(vec)
 	End
 	
 	Method GetType:Int ()
-		Return CIRCLE
+		Return ShapeType.CIRCLE
 	End
 	
 	#REM

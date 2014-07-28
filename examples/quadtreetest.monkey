@@ -1,9 +1,4 @@
-Method GetBounds:Rectangle ()
-	Method DebugDraw:Void ()
-	Method GetPosition:Vector ()
-	Method SetPosition:Void (x:Float, y:Float)
-	Method SetPosition:Void (vec:Vector)
-	Method GetType:Int ()Strict
+Strict
 
 Import mojo
 Import sat
@@ -19,7 +14,7 @@ Class Game Extends App
 	Field poly1:Polygon
 	
 	Method OnCreate:Int ()
-		poly1 = New Polygon(New Vec2(0, 0), New VecStack([
+		poly1 = New Polygon(0, 0, New VecStack([
 			New Vec2(0,0), New Vec2(60, 0), New Vec2(100, 40), New Vec2(60, 80), New Vec2(0, 80)]))
 			
 		poly1.Translate(-poly1.GetBounds().width / 2, -poly1.GetBounds().height / 2)
@@ -28,7 +23,7 @@ Class Game Extends App
 		quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 		response = New Response()
 		For Local i:Int = 0 To 300
-			Local p:Polygon = New Polygon(New Vec2(Rnd(100, DeviceWidth()-100), Rnd(100, DeviceHeight()-100)), 
+			Local p:Polygon = New Polygon(Rnd(100, DeviceWidth() -100), Rnd(100, DeviceHeight() -100),
 					New VecStack([New Vec2(0, 0), New Vec2(10, 0), New Vec2(10, 10), New Vec2(0, 10)]))
 			p.Translate(-5, -5)
 			pool.Push(p)
@@ -39,8 +34,8 @@ Class Game Extends App
 	End
 	
 	Method OnUpdate:Int ()
-		poly1.position.Copy(MouseX(), MouseY())
-		poly1.Rotate(3)
+		poly1.Set(MouseX(), MouseY())
+		'poly1.Rotate(3)
 		If (KeyHit(KEY_SPACE))
 			useQuad = (Not useQuad = True)
 		Endif
@@ -68,8 +63,8 @@ Class Game Extends App
 				For Local j:Int = 0 To returnObjects.Length() - 1
 					p = Polygon(returnObjects.Get(j))
 					If (t <> p And SAT.TestPolygonPolygon(t, p, response))
-						If (p <> poly1) p.position.Add(response.overlapV)
-						If (t <> poly1) t.position.Sub(response.overlapV)
+						If (p <> poly1) p.Add(response.overlapV)
+						If (t <> poly1) t.Sub(response.overlapV)
 					Endif
 					response.Clear()
 				Next
@@ -86,8 +81,8 @@ Class Game Extends App
 				For Local j:Int = 0 To pool.Length() - 1
 					p = pool.Get(j)
 					If (t <> p And SAT.TestPolygonPolygon(t, p, response))
-						If (p <> poly1) p.position.Add(response.overlapV)
-						If (t <> poly1) t.position.Sub(response.overlapV)
+						If (p <> poly1) p.Add(response.overlapV)
+						If (t <> poly1) t.Sub(response.overlapV)
 					Endif
 					response.Clear()
 				Next
@@ -100,7 +95,7 @@ Class Game Extends App
 		
 		For Local i:Int = 0 To pool.Length() - 1
 			o = pool.Get(i)
-			If (o <> poly1) o.Rotate(-1)
+			If (o <> poly1) o.RotatePolygon(-1)
 		Next
 		
 		If (useQuad)

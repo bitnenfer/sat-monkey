@@ -28,10 +28,10 @@ Class TestPolygonToPolygon Extends Test Implements iSpec
 				Local polygon2:Polygon
 				Local collide:Bool = False
 				
-				polygon1 = New Polygon(New Vec2(0, 0), New VecStack([
+				polygon1 = New Polygon(0, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 					
-				polygon2 = New Polygon(New Vec2(30, 0), New VecStack([
+				polygon2 = New Polygon(30, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(30, 0), New Vec2(0, 30)]))
 					
 				collide = SAT.TestPolygonPolygon(polygon1, polygon2)
@@ -44,10 +44,10 @@ Class TestPolygonToPolygon Extends Test Implements iSpec
 				Local response:Response
 				
 				response = New Response()
-				polygon1 = New Polygon(New Vec2(0, 0), New VecStack([
+				polygon1 = New Polygon(0, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 					
-				polygon2 = New Polygon(New Vec2(30, 0), New VecStack([
+				polygon2 = New Polygon(30, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(30, 0), New Vec2(0, 30)]))
 					
 				SAT.TestPolygonPolygon(polygon1, polygon2, response)
@@ -59,10 +59,10 @@ Class TestPolygonToPolygon Extends Test Implements iSpec
 				Local response:Response
 				
 				response = New Response()
-				polygon1 = New Polygon(New Vec2(0, 0), New VecStack([
+				polygon1 = New Polygon(0, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 					
-				polygon2 = New Polygon(New Vec2(30, 0), New VecStack([
+				polygon2 = New Polygon(30, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(30, 0), New Vec2(0, 30)]))
 					
 				SAT.TestPolygonPolygon(polygon1, polygon2, response)
@@ -74,10 +74,10 @@ Class TestPolygonToPolygon Extends Test Implements iSpec
 				Local response:Response
 				
 				response = New Response()
-				polygon1 = New Polygon(New Vec2(0, 0), New VecStack([
+				polygon1 = New Polygon(0, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 					
-				polygon2 = New Polygon(New Vec2(30, 0), New VecStack([
+				polygon2 = New Polygon(30, 0, New VecStack([
 					New Vec2(0, 0), New Vec2(30, 0), New Vec2(0, 30)]))
 					
 				SAT.TestPolygonPolygon(polygon1, polygon2, response)
@@ -103,8 +103,8 @@ Class TestPolygonToCircle Extends Test Implements iSpec
 				Local polygon:Polygon
 				Local collide:Bool = False
 				
-				circle = New Circle(New Vec2(50, 50), 20)
-				polygon = New Polygon(New Vec2(0, 0), New VecStack([
+				circle = New Circle(50, 50, 20)
+				polygon = New Polygon(0, 0, New VecStack([
 				New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 				collide = SAT.TestPolygonCircle(polygon, circle)
 				spec.Expect(collide).BeTrue()
@@ -115,8 +115,8 @@ Class TestPolygonToCircle Extends Test Implements iSpec
 				Local response:Response
 	
 				response = New Response()
-				circle = New Circle(New Vec2(50, 50), 20)
-				polygon = New Polygon(New Vec2(0, 0), New VecStack([
+				circle = New Circle(50, 50, 20)
+				polygon = New Polygon(0, 0, New VecStack([
 				New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 				SAT.TestPolygonCircle(polygon, circle, response)
 				' I use ceil because the number it returns it's about the same but
@@ -129,8 +129,8 @@ Class TestPolygonToCircle Extends Test Implements iSpec
 				Local response:Response
 	
 				response = New Response()
-				circle = New Circle(New Vec2(50, 50), 20)
-				polygon = New Polygon(New Vec2(0, 0), New VecStack([
+				circle = New Circle(50, 50, 20)
+				polygon = New Polygon(0, 0, New VecStack([
 				New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 				SAT.TestPolygonCircle(polygon, circle, response)
 				' I use ceil because the number it returns it's about the same but
@@ -143,8 +143,8 @@ Class TestPolygonToCircle Extends Test Implements iSpec
 				Local response:Response
 	
 				response = New Response()
-				circle = New Circle(New Vec2(50, 50), 20)
-				polygon = New Polygon(New Vec2(0, 0), New VecStack([
+				circle = New Circle(50, 50, 20)
+				polygon = New Polygon(0, 0, New VecStack([
 				New Vec2(0, 0), New Vec2(40, 0), New Vec2(40, 40), New Vec2(0, 40)]))
 				SAT.TestPolygonCircle(polygon, circle, response)
 				' I use ceil because the number it returns it's about the same but
@@ -169,8 +169,8 @@ Class TestNoCollisionRectangle Extends Test Implements iSpec
 				Local box2:Polygon
 				Local collide:Bool = True
 				
-				box1 = New Rectangle(New Vec2(0, 0), 20, 20).ToPolygon()
-				box2 = New Rectangle(New Vec2(100, 100), 20, 20).ToPolygon()
+				box1 = New Rectangle(0, 0, 20, 20).ToPolygon()
+				box2 = New Rectangle(100, 100, 20, 20).ToPolygon()
 				collide = SAT.TestPolygonPolygon(box1, box2)
 				spec.Expect(collide).BeFalse()
 				spec.Done()
@@ -192,7 +192,7 @@ Class TestPointOverPolygon Extends Test Implements iSpec
 				Local collide:Bool = False
 				Local point:Vec2
 				
-				triangle = New Polygon(New Vec2(30, 0), New VecStack([
+				triangle = New Polygon(30, 0, New VecStack([
 					New Vec2(), New Vec2(30, 0), New Vec2(0, 30)]))
 				point = New Vec2(0, 0)
 				
@@ -204,7 +204,7 @@ Class TestPointOverPolygon Extends Test Implements iSpec
 				Local collide:Bool = False
 				Local point:Vec2
 				
-				triangle = New Polygon(New Vec2(30, 0), New VecStack([
+				triangle = New Polygon(30, 0, New VecStack([
 					New Vec2(), New Vec2(30, 0), New Vec2(0, 30)]))
 				point = New Vec2(35, 5)
 				
@@ -229,7 +229,7 @@ Class TestPointOverCircle Extends Test Implements iSpec
 				Local collide:Bool = False
 				Local point:Vec2
 				
-				circle = New Circle(New Vec2(100, 100), 20)
+				circle = New Circle(100, 100, 20)
 				point = New Vec2(0, 0)
 				
 				collide = SAT.PointInCircle(point, circle)
@@ -240,7 +240,7 @@ Class TestPointOverCircle Extends Test Implements iSpec
 				Local collide:Bool = False
 				Local point:Vec2
 				
-				circle = New Circle(New Vec2(100, 100), 20)
+				circle = New Circle(100, 100, 20)
 				point = New Vec2(110, 110)
 				
 				collide = SAT.PointInCircle(point, circle)
@@ -271,11 +271,11 @@ Class TestQuadTree Extends Test Implements iSpec
 				quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 				For Local i:Int = 0 Until 5
 					If (t = 0)
-						circle = New Circle( New Vec2(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()) ), 10)
+						circle = New Circle(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()), 10)
 						quadTree.Insert(circle)
 						t = 1
 					Else
-						poly = New Polygon(New Vec2(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight())), 
+						poly = New Polygon(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()),
 							New VecStack([New Vec2(0, 0), New Vec2(100, 0), New Vec2(100, 100), New Vec2(0, 100)]))
 						quadTree.Insert(poly)
 						t = 0
@@ -300,11 +300,11 @@ Class TestQuadTree Extends Test Implements iSpec
 				quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 				For Local i:Int = 0 Until 5
 					If (t = 0)
-						circle = New Circle( New Vec2(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()) ), 10)
+						circle = New Circle(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()), 10)
 						quadTree.Insert(circle)
 						t = 1
 					Else
-						poly = New Polygon(New Vec2(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight())), 
+						poly = New Polygon(Rnd(0, DeviceWidth()), Rnd(0, DeviceHeight()),
 							New VecStack([New Vec2(0, 0), New Vec2(100, 0), New Vec2(100, 100), New Vec2(0, 100)]))
 						quadTree.Insert(poly)
 						t = 0
@@ -330,12 +330,12 @@ Class TestQuadTree Extends Test Implements iSpec
 				
 				quadTree = New QuadTree(0, 0, DeviceWidth(), DeviceHeight())
 				For Local i:Int = 0 Until 5
-					circle = New Circle(New Vec2(0, 0), 10)
+					circle = New Circle(0, 0, 10)
 					quadTree.Insert(circle)
 				Next
 				
-				circle = New Circle(New Vec2(DeviceWidth() - 100, DeviceHeight() - 100), 10)
-				poly = New Polygon(New Vec2(DeviceWidth() - 20, DeviceHeight() - 50), New VecStack([
+				circle = New Circle(DeviceWidth() -100, DeviceHeight() -100, 10)
+				poly = New Polygon(DeviceWidth() -20, DeviceHeight() -50, New VecStack([
 					New Vec2(0, 0), New Vec2(100, 0)]))
 				
 				quadTree.Insert(circle)

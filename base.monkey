@@ -15,9 +15,11 @@ Strict
 Import sat.rectangle
 Import sat.vec2
 
-Const POLYGON:Int = 0
-Const CIRCLE:Int = 1
-Const VECTOR:Int = 3
+Class ShapeType
+	Const POLYGON:Int = 0
+	Const CIRCLE:Int = 1
+	Const VECTOR:Int = 3
+End
 
 Interface iSAT
 	Method GetBounds:Rectangle ()
